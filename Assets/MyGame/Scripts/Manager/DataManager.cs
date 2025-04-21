@@ -5,12 +5,12 @@ using UnityEngine;
 public class DataManager : BaseManager<DataManager>
 {
     public GlobalConfig GlobalConfig;
-    [SerializeField] private BoardType m_CurrentBoardType;
+    [SerializeField] private BoardType _CurrentBoardType;
 
     public void SetBoardType(BoardType boardType)
     {
-        m_CurrentBoardType = boardType;
+        _CurrentBoardType = boardType;
     }
 
-    public BoardType GetCurrentBoardType() => m_CurrentBoardType;
+    public BoardType GetCurrentBoardType() => _CurrentBoardType;
 }
