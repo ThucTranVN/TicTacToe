@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BoardController : BaseManager<BoardController>
@@ -13,7 +12,11 @@ public class BoardController : BaseManager<BoardController>
 
     private void Start()
     {
-        defaultBoardType = DataManager.Instance.GetCurrentBoardType();
+        if(DataManager.HasInstance)
+        {
+            defaultBoardType = DataManager.Instance.GetCurrentBoardType();
+        }    
+       
     }
     public void InitBoard(BoardType boardType)
     {

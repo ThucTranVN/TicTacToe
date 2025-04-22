@@ -7,4 +7,5 @@ public class GlobalConfig : ScriptableObject
 {
     [Header("UI")]
     public float LoadingOverlapTime = 1f;
+    public BoardType defaultBoardType = BoardType.Size3x3;
 }
