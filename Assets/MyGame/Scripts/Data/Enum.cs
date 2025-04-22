@@ -26,9 +26,9 @@ public enum GamePlatform
 }
 public enum BoardType
 {
-    Default = 0,
-    Size3x3,
-    Size6x6,
-    Size9x9,
-    Size11x11,
+    Unknown = 0,
+    Size3x3 = 3,
+    Size6x6 = 6,
+    Size9x9 =9 ,
+    Size11x11 =11,
 }
