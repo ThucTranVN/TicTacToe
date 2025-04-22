@@ -1,20 +1,25 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BoardController : BaseManager<BoardController>
 {
     public GameObject tilePrefab;
     public int borderSize;
-    private BoardType defaultBoardType = BoardType.Size3x3;
+    private BoardType defaultBoardType;
     private int width;
     private int height;
     private Tile[,] tiles;
     private const string PREFAB_TILE_PATH = "Prefabs/Tile/TilePrefab";
 
+    private void Start()
+    {
+        defaultBoardType = DataManager.Instance.GetCurrentBoardType();
+    }
     public void InitBoard(BoardType boardType)
     {
         if (boardType == BoardType.Unknown)
         {
-            boardType = defaultBoardType != BoardType.Unknown ? defaultBoardType : BoardType.Size3x3;
+            boardType = defaultBoardType;
         }
         SetupBoardType(boardType);
         SetupCameraPosition();
@@ -39,16 +44,7 @@ public class BoardController : BaseManager<BoardController>
             {
                 GameObject tileObject = Instantiate(tilePrefab, new Vector3(x, y, 0), Quaternion.identity, this.transform);
                 tileObject.name = $"Tile({x},{y})";
-                Tile tile = tileObject.GetComponent<Tile>();
-                if (tile == null)
-                {
-                    tile = tileObject.AddComponent<Tile>();
-                    if (tile == null)
-                    {
-                        Debug.LogError($"Tile component not found on {tileObject.name}");
-                        continue;
-                    }    
-                }
+                Tile tile = tileObject.GetOrAddComponent<Tile>();
                 tile.xIndex = x;
                 tile.yIndex = y;
                 tiles[x, y] = tile;

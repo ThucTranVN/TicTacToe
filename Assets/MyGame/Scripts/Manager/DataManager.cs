@@ -5,7 +5,7 @@ using UnityEngine;
 public class DataManager : BaseManager<DataManager>
 {
     public GlobalConfig GlobalConfig;
-    [SerializeField] private BoardType currentBoardType;
+    [SerializeField] private BoardType currentBoardType = BoardType.Size3x3;
 
     public void SetBoardType(BoardType boardType)
     {
