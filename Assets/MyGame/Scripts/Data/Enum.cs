@@ -32,3 +32,19 @@ public enum BoardType
     Size9x9,
     Size11x11,
 }
+
+public enum Direction
+{
+    Unknow = 0,
+    Up,
+    Down,
+    Left,
+    Right
+}
+
+public enum GameMode
+{
+    Unknow = 0,
+    PVP,
+    PVE
+}
