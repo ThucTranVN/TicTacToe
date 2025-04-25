@@ -48,7 +48,7 @@ public class SelectionPanel : BaseScreen
         boardTypes.Clear();
         foreach (BoardType type in System.Enum.GetValues(typeof(BoardType)))
         {
-            if (type != BoardType.Default)
+            if (type != BoardType.Unknown)
                 boardTypes.Add(type);
         }
     }
