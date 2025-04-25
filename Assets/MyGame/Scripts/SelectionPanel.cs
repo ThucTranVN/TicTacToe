@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class SelectionPanel : BaseScreen
 {
+    [Header("UI References")]
     public Transform contentParent;
     public ScrollRect scrollRect;
     public Button leftButton;
@@ -12,15 +13,21 @@ public class SelectionPanel : BaseScreen
     public Button pvpButton;
     public Button pveButton;
 
+    [Header("Snap Scroll")]
+    public SnapScroll snapScroll;
+
     private List<BoardViewItem> boardViewItems = new List<BoardViewItem>();
     private List<BoardType> boardTypes = new List<BoardType>();
-    private BoardType currentBoardType = BoardType.Size3x3; 
+    private BoardType currentBoardType = BoardType.Size3x3;
 
     private void Start()
     {
         InitBoardTypes();
         InitListBoard(currentBoardType);
         OnClickButton();
+
+        // Gán callback khi SnapScroll đổi index
+        snapScroll.onSnapChanged = OnSnapIndexChanged;
     }
 
     public override void Init()
@@ -34,7 +41,8 @@ public class SelectionPanel : BaseScreen
         rightButton.onClick.AddListener(() => MoveBoard(Direction.Right));
         pvpButton.onClick.AddListener(() => EnterGameMode(GameMode.PVP));
         pveButton.onClick.AddListener(() => EnterGameMode(GameMode.PVE));
-    }    
+    }
+
     private void InitBoardTypes()
     {
         boardTypes.Clear();
@@ -45,63 +53,81 @@ public class SelectionPanel : BaseScreen
         }
     }
 
-    private void InitListBoard(BoardType type)
+    private void InitListBoard(BoardType selectedType)
     {
+        boardViewItems.Clear();
+
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);
         }
+
         GameObject prefab = Resources.Load<GameObject>("Prefabs/BoardViewItem");
         if (prefab == null)
         {
             Debug.LogError("Không tìm thấy prefab 'BoardViewItem' trong Resources/Prefabs/");
             return;
         }
-        GameObject itemGO = Instantiate(prefab, contentParent);
-        itemGO.name = $"Board {type}";
-        BoardViewItem item = itemGO.GetComponent<BoardViewItem>();
 
-        if (item != null)
+        foreach (BoardType type in boardTypes)
         {
-            item.Init(type);
-            boardViewItems.Add(item);
-        }
-        else
-        {
-            Debug.LogError("Prefab không có component BoardViewItem!");
+            GameObject itemGO = Instantiate(prefab, contentParent);
+            itemGO.name = $"Board {type}";
+            BoardViewItem item = itemGO.GetComponent<BoardViewItem>();
+
+            if (item != null)
+            {
+                item.Init(type);
+                boardViewItems.Add(item);
+            }
+            else
+            {
+                Debug.LogError("Prefab không có component BoardViewItem!");
+            }
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentParent.GetComponent<RectTransform>());
+
+        int index = boardTypes.IndexOf(selectedType);
+        snapScroll.SetIndex(index); // Đặt index ban đầu
+        OnSnapIndexChanged(index); // Cập nhật UI ban đầu
     }
 
     private void MoveBoard(Direction direction)
     {
-        if (boardViewItems.Count == 0) return;
+        int currentIndex = boardTypes.IndexOf(currentBoardType);
 
-        switch (direction)
-        {
-            case Direction.Left:
-                currentBoardType = (BoardType)Mathf.Max((int)BoardType.Size3x3, (int)currentBoardType - 1);
-                break;
-            case Direction.Right:
-                currentBoardType = (BoardType)Mathf.Min((int)BoardType.Size11x11, (int)currentBoardType + 1);
-                break;
-        }
+        if (direction == Direction.Left && currentIndex > 0)
+            currentIndex--;
+        else if (direction == Direction.Right && currentIndex < boardTypes.Count - 1)
+            currentIndex++;
 
-        UpdateView();
+        currentBoardType = boardTypes[currentIndex];
+
+        snapScroll.SetIndex(currentIndex);
+        OnSnapIndexChanged(currentIndex);
     }
 
-    private void UpdateView()
+    private void OnSnapIndexChanged(int index)
     {
-        if (boardViewItems.Count > 0)
+        if (index < 0 || index >= boardTypes.Count) return;
+
+        currentBoardType = boardTypes[index];
+
+        for (int i = 0; i < boardViewItems.Count; i++)
         {
-            BoardViewItem item = boardViewItems[0]; 
-            item.Init(currentBoardType); 
+            boardViewItems[i].SetSelected(i == index);
         }
+
+        Debug.Log($"[SnapScroll] Đang chọn board: {currentBoardType}");
     }
 
     private void EnterGameMode(GameMode mode)
     {
         Debug.Log($"[EnterGameMode] Game Mode: {mode}, Board Type: {currentBoardType}");
+
+        // Tùy theo logic game, có thể gọi:
+        // GameManager.Instance.StartGame(mode, currentBoardType);
+        // hoặc SceneManager.LoadScene(...);
     }
 }
