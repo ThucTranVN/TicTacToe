@@ -125,7 +125,11 @@ public class SelectionPanel : BaseScreen
     private void EnterGameMode(GameMode mode)
     {
         Debug.Log($"[EnterGameMode] Game Mode: {mode}, Board Type: {currentBoardType}");
-
+        this.Hide();
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.StartGame(mode, currentBoardType);
+        }
         // Tùy theo logic game, có thể gọi:
         // GameManager.Instance.StartGame(mode, currentBoardType);
         // hoặc SceneManager.LoadScene(...);

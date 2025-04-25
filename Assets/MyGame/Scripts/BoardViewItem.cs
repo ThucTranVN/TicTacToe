@@ -24,6 +24,16 @@ public class BoardViewItem : MonoBehaviour
         boardLabel.text = type.ToString();
     }
 
+    private void SetImage()
+    {
+        switch (boardType)
+        {
+            case BoardType.Size3x3:
+
+                break;
+        }
+    }
+
     public void SetSelected(bool isSelected)
     {
         // Scale to highlight
