@@ -190,6 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardImage: {fileID: 5752572821180272307}
   boardLabel: {fileID: 2150152434961677906}
+  globalConfig: {fileID: 11400000, guid: 11494ba134bab4a9f88c076082650f9d, type: 2}
 --- !u!1 &8575791605913317510
 GameObject:
   m_ObjectHideFlags: 0

@@ -926,7 +926,7 @@ public class UIManager : BaseManager<UIManager>
         // check resource path with default path
         if (result == null)
         {
-            result = Resources.Load(defaultPath) as GameObject;
+            result = Resources.Load<GameObject>(defaultPath);
         }
 
         return result;

@@ -2,10 +2,10 @@ public class GameManager : BaseManager<GameManager>
 {
     private void Start()
     {
-        //if (UIManager.HasInstance)
-        //{
-        //    UIManager.Instance.ShowScreen<SelectionPanel>();
-        //}
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowScreen<ScreenBoardSelection>();
+        }
     }
 
     public void StartGame(GameMode gameMode, BoardType boardType)
