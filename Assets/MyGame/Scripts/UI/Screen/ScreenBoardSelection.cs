@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using UnityEngine.EventSystems;
 
 public class ScreenBoardSelection : BaseScreen
 {
@@ -14,19 +15,12 @@ public class ScreenBoardSelection : BaseScreen
     public Button pvpButton;
     public Button pveButton;
 
-    [Header("Config")]
-    public GlobalConfig globalConfig;
-
     private List<BoardViewItem> boardViewItems = new List<BoardViewItem>();
     private List<BoardType> boardTypes = new List<BoardType>();
     private BoardType currentBoardType = BoardType.Size3x3;
 
-    private float[] itemPositions;
-    private float targetPos;
-    private float smoothSpeed = 5f;
-    private bool isDragging = false;
     private int currentIndex = 0;
-    private bool snapChanged = false;
+    private bool isDragging = false;
 
     public override void Init()
     {
@@ -34,6 +28,7 @@ public class ScreenBoardSelection : BaseScreen
         InitBoardTypes();
         InitListBoard(currentBoardType);
         InitButtons();
+        InitScrollEvents();
     }
 
     private void InitButtons()
@@ -46,7 +41,7 @@ public class ScreenBoardSelection : BaseScreen
 
     private void InitBoardTypes()
     {
-        Array enumValues = System.Enum.GetValues(typeof(BoardType));
+        Array enumValues = Enum.GetValues(typeof(BoardType));
         for (int i = 1; i < enumValues.Length; i++)
         {
             BoardType type = (BoardType)enumValues.GetValue(i);
@@ -59,16 +54,16 @@ public class ScreenBoardSelection : BaseScreen
 
     private void InitListBoard(BoardType selectedType)
     {
-        if (globalConfig == null)
+        if (DataManager.Instance.GlobalConfig == null)
         {
-            Debug.LogError("GlobalConfig không được gán trong ScreenBoardSelection.");
+            Debug.Log("GlobalConfig không được gán trong DataManager.");
             return;
         }
 
-        GameObject prefab = globalConfig.BoardViewItemPrefab;
+        GameObject prefab = DataManager.Instance.GlobalConfig.BoardViewItemPrefab;
         if (prefab == null)
         {
-            Debug.LogError("Không tìm thấy prefab 'BoardViewItem' trong GlobalConfig.");
+            Debug.Log("Không tìm thấy prefab 'BoardViewItem' trong GlobalConfig.");
             return;
         }
 
@@ -82,22 +77,16 @@ public class ScreenBoardSelection : BaseScreen
             if (item != null)
             {
                 item.Init(type);
+                item.NormalizedPosition = (float)i / (boardTypes.Count - 1);
                 boardViewItems.Add(item);
             }
             else
             {
-                Debug.LogError("Prefab không có component BoardViewItem!");
+                Debug.LogWarning("Prefab không có component BoardViewItem!");
             }
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentParent.GetComponent<RectTransform>());
-
-        itemPositions = new float[boardTypes.Count];
-        for (int i = 0; i < boardTypes.Count; i++)
-        {
-            itemPositions[i] = (float)i / (boardTypes.Count - 1);
-        }
-
         int startIndex = boardTypes.IndexOf(selectedType);
         SetIndex(startIndex, false);
     }
@@ -107,21 +96,19 @@ public class ScreenBoardSelection : BaseScreen
         if (index < 0 || index >= boardTypes.Count) return;
 
         currentIndex = index;
-        targetPos = itemPositions[index];
+        float targetPos = boardViewItems[index].NormalizedPosition;
 
         if (smooth)
         {
-            DOTween.To(() => scrollRect.horizontalNormalizedPosition,
-                       x => scrollRect.horizontalNormalizedPosition = x,
-                       targetPos, 0.5f); 
+            scrollRect.DOHorizontalNormalizedPos(targetPos, 0.3f).SetEase(Ease.OutQuad).OnComplete(() => UpdateSelectedBoard(index));
         }
         else
         {
             scrollRect.horizontalNormalizedPosition = targetPos;
+            UpdateSelectedBoard(index);
         }
 
         UpdateButtonVisibility(index);
-        UpdateSelectedBoard(index);
     }
 
     private void MoveBoard(Direction direction)
@@ -164,79 +151,65 @@ public class ScreenBoardSelection : BaseScreen
         rightButton.gameObject.SetActive(index < boardTypes.Count - 1);
     }
 
-    private new void Update()
+    private void InitScrollEvents()
     {
-        if (boardTypes == null || boardTypes.Count == 0) return;
+        scrollRect.onValueChanged.AddListener(OnScrollValueChanged);
 
-        if (Input.GetMouseButton(0))
+        EventTrigger trigger = scrollRect.gameObject.GetComponent<EventTrigger>();
+        if (trigger == null)
+            trigger = scrollRect.gameObject.AddComponent<EventTrigger>();
+
+        var entryBegin = new EventTrigger.Entry { eventID = EventTriggerType.BeginDrag };
+        entryBegin.callback.AddListener((data) => { isDragging = true; });
+        trigger.triggers.Add(entryBegin);
+
+        var entryEnd = new EventTrigger.Entry { eventID = EventTriggerType.EndDrag };
+        entryEnd.callback.AddListener((data) =>
         {
-            isDragging = true;
-            targetPos = scrollRect.horizontalNormalizedPosition;
-        }
-        else
-        {
-            if (isDragging)
-            {
-                isDragging = false;
-                float nearestPos = FindNearest(targetPos);
-                int nearestIndex = FindNearestIndex(targetPos);
-                if (nearestIndex != currentIndex)
-                {
-                    snapChanged = true;
-                }
-                SetIndex(nearestIndex);
-            }
+            isDragging = false;
+            SnapToClosestBoard();
+        });
+        trigger.triggers.Add(entryEnd);
+    }
 
-            scrollRect.horizontalNormalizedPosition = Mathf.Lerp(scrollRect.horizontalNormalizedPosition, targetPos, Time.deltaTime * smoothSpeed);
-        }
-
+    private void OnScrollValueChanged(Vector2 value)
+    {
         ScaleItems();
     }
 
-    private float FindNearest(float currentPos)
+    private void SnapToClosestBoard()
     {
-        float closest = itemPositions[0];
-        float minDist = Mathf.Abs(currentPos - closest);
-
-        for (int i = 1; i < itemPositions.Length; i++)
+        int closestIndex = FindClosestBoardIndex();
+        if (closestIndex != -1)
         {
-            float dist = Mathf.Abs(currentPos - itemPositions[i]);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                closest = itemPositions[i];
-            }
+            SetIndex(closestIndex, smooth: true);
         }
-
-        return closest;
-    }
-
-    private int FindNearestIndex(float currentPos)
-    {
-        int nearestIndex = 0;
-        float minDist = Mathf.Abs(currentPos - itemPositions[0]);
-
-        for (int i = 1; i < itemPositions.Length; i++)
-        {
-            float dist = Mathf.Abs(currentPos - itemPositions[i]);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                nearestIndex = i;
-            }
-        }
-
-        return nearestIndex;
     }
 
     private void ScaleItems()
     {
         for (int i = 0; i < boardViewItems.Count; i++)
         {
-            float distance = Mathf.Abs(scrollRect.horizontalNormalizedPosition - itemPositions[i]);
-            float scale = Mathf.Clamp(1f - distance * 2f, 0.8f, 1f);
-
-            boardViewItems[i].transform.localScale = Vector3.Lerp(boardViewItems[i].transform.localScale, new Vector3(scale, scale, 1f), Time.deltaTime * 10f);
+            boardViewItems[i].UpdateScale(scrollRect.horizontalNormalizedPosition);
         }
+    }
+
+    private int FindClosestBoardIndex()
+    {
+        float currentPos = scrollRect.horizontalNormalizedPosition;
+        float minDistance = float.MaxValue;
+        int closestIndex = -1;
+
+        for (int i = 0; i < boardViewItems.Count; i++)
+        {
+            float distance = Mathf.Abs(boardViewItems[i].NormalizedPosition - currentPos);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestIndex = i;
+            }
+        }
+
+        return closestIndex;
     }
 }

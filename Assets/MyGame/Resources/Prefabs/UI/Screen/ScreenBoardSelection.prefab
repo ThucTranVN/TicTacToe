@@ -60,7 +60,6 @@ MonoBehaviour:
   rightButton: {fileID: 5410543764868846984}
   pvpButton: {fileID: 5294636603903013506}
   pveButton: {fileID: 5198806754050096904}
-  globalConfig: {fileID: 11400000, guid: 11494ba134bab4a9f88c076082650f9d, type: 2}
 --- !u!1 &382240682558650591
 GameObject:
   m_ObjectHideFlags: 0

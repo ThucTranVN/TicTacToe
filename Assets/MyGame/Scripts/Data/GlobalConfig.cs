@@ -10,7 +10,10 @@ public class GlobalConfig : ScriptableObject
     public BoardType defaultBoardType = BoardType.Size3x3;
 
     [Header("Board Images")]
-    public List<Sprite> boardSprites;
+    public Sprite spriteSize3x3;
+    public Sprite spriteSize6x6;
+    public Sprite spriteSize9x9;
+    public Sprite spriteSize11x11;
 
     [Header("Prefabs")]
     public GameObject BoardViewItemPrefab;
