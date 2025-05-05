@@ -25,12 +25,14 @@ public class ScreenBoardSelection : BaseScreen
     public override void Init()
     {
         base.Init();
-        if (!DataManager.HasInstance)
+        if (DataManager.HasInstance)
         {
-            Debug.LogError("DataManager chưa được khởi tạo.");
-            return;
+            currentBoardType = DataManager.Instance.GlobalConfig.defaultBoardType;
         }
-        currentBoardType = DataManager.Instance.GlobalConfig.defaultBoardType;
+        else
+        {
+            Debug.LogWarning("DataManager chưa được khởi tạo.");
+        }
         InitBoardTypes();
         InitListBoard(currentBoardType);
         InitButtons();
@@ -103,24 +105,30 @@ public class ScreenBoardSelection : BaseScreen
 
         currentIndex = index;
         float targetPos = boardViewItems[index].NormalizedPosition;
-        if (!DataManager.HasInstance) return;
-        float duration = DataManager.Instance.GlobalConfig.scrollTweenDuration;
 
-        if (smooth)
+        if (DataManager.HasInstance)
         {
-            scrollRect.DOHorizontalNormalizedPos(targetPos, duration)
-                      .SetEase(Ease.OutQuad)
-                      .OnComplete(() => UpdateSelectedBoard(index));
+            float duration = DataManager.Instance.GlobalConfig.scrollTweenDuration;
+
+            if (smooth)
+            {
+                scrollRect.DOHorizontalNormalizedPos(targetPos, duration)
+                          .SetEase(Ease.OutQuad)
+                          .OnComplete(() => UpdateSelectedBoard(index));
+            }
+            else
+            {
+                scrollRect.horizontalNormalizedPosition = targetPos;
+                UpdateSelectedBoard(index);
+            }
         }
         else
         {
-            scrollRect.horizontalNormalizedPosition = targetPos;
-            UpdateSelectedBoard(index);
+            Debug.LogWarning("DataManager chưa được khởi tạo. Không thể lấy scrollTweenDuration.");
         }
 
         UpdateButtonVisibility(index);
     }
-
     private void MoveBoard(Direction direction)
     {
         if (direction == Direction.Left && currentIndex > 0)
