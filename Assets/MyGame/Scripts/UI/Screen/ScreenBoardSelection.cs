@@ -25,6 +25,11 @@ public class ScreenBoardSelection : BaseScreen
     public override void Init()
     {
         base.Init();
+        if (!DataManager.HasInstance)
+        {
+            Debug.LogError("DataManager chưa được khởi tạo.");
+            return;
+        }
         currentBoardType = DataManager.Instance.GlobalConfig.defaultBoardType;
         InitBoardTypes();
         InitListBoard(currentBoardType);
@@ -98,6 +103,7 @@ public class ScreenBoardSelection : BaseScreen
 
         currentIndex = index;
         float targetPos = boardViewItems[index].NormalizedPosition;
+        if (!DataManager.HasInstance) return;
         float duration = DataManager.Instance.GlobalConfig.scrollTweenDuration;
 
         if (smooth)
