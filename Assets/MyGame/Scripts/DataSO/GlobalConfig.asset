@@ -19,3 +19,13 @@ MonoBehaviour:
   spriteSize9x9: {fileID: 21300000, guid: ea271205336c2cc49b3d16eee3436870, type: 3}
   spriteSize11x11: {fileID: 21300000, guid: b4b2b29a0050d084f89d55a1d61b76fd, type: 3}
   BoardViewItemPrefab: {fileID: 6377972032354418782, guid: ce146ef76d082f34ab2e766f0c35f10d, type: 3}
+  scaleTweenDuration: 0.3
+  scaleSelected: 1.1
+  scaleNormal: 1
+  scaleMin: 0.8
+  scaleFactor: 2
+  imageColorSelected: {r: 1, g: 1, b: 1, a: 1}
+  imageColorUnselected: {r: 1, g: 1, b: 1, a: 0.6}
+  labelColorSelected: {r: 0, g: 0.8441336, b: 1, a: 1}
+  labelColorUnselected: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  scrollTweenDuration: 0.35

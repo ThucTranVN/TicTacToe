@@ -17,7 +17,7 @@ public class ScreenBoardSelection : BaseScreen
 
     private List<BoardViewItem> boardViewItems = new List<BoardViewItem>();
     private List<BoardType> boardTypes = new List<BoardType>();
-    private BoardType currentBoardType = BoardType.Size3x3;
+    private BoardType currentBoardType;
 
     private int currentIndex = 0;
     private bool isDragging = false;
@@ -25,6 +25,7 @@ public class ScreenBoardSelection : BaseScreen
     public override void Init()
     {
         base.Init();
+        currentBoardType = DataManager.Instance.GlobalConfig.defaultBoardType;
         InitBoardTypes();
         InitListBoard(currentBoardType);
         InitButtons();
@@ -97,10 +98,13 @@ public class ScreenBoardSelection : BaseScreen
 
         currentIndex = index;
         float targetPos = boardViewItems[index].NormalizedPosition;
+        float duration = DataManager.Instance.GlobalConfig.scrollTweenDuration;
 
         if (smooth)
         {
-            scrollRect.DOHorizontalNormalizedPos(targetPos, 0.3f).SetEase(Ease.OutQuad).OnComplete(() => UpdateSelectedBoard(index));
+            scrollRect.DOHorizontalNormalizedPos(targetPos, duration)
+                      .SetEase(Ease.OutQuad)
+                      .OnComplete(() => UpdateSelectedBoard(index));
         }
         else
         {
