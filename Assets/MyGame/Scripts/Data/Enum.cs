@@ -29,6 +29,22 @@ public enum BoardType
     Unknown = 0,
     Size3x3 = 3,
     Size6x6 = 6,
-    Size9x9 =9 ,
-    Size11x11 =11,
+    Size9x9 = 9,
+    Size11x11 = 11,
+}
+
+public enum Direction
+{
+    Unknow = 0,
+    Up,
+    Down,
+    Left,
+    Right
+}
+
+public enum GameMode
+{
+    Unknow = 0,
+    PVP,
+    PVE
 }
