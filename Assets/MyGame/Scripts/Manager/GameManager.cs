@@ -4,8 +4,8 @@ public class GameManager : BaseManager<GameManager>
     {
         if (UIManager.HasInstance)
         {
-            UIManager.Instance.ShowScreen<ScreenLoading>();
-           
+            UIManager.Instance.ShowNotify<NotifyGameLoading>();
+
         }
     }
 

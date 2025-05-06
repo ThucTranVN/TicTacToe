@@ -34,7 +34,7 @@ public class GlobalConfig : ScriptableObject
     [Header("Scroll Settings")]
     public float scrollTweenDuration = 0.35f;
 
-    [Header("ScreenLoading Setting")]
+    [Header("NotifyGameLoadProgress Setting")]
     public float timeFakeLoading;
     public float timeHideCanvasGroup;
     public float timeDoAnimationText;

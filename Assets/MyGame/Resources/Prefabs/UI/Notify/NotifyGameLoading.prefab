@@ -609,7 +609,7 @@ GameObject:
   - component: {fileID: 7419604518825828931}
   - component: {fileID: 2428420352962337301}
   m_Layer: 0
-  m_Name: ScreenLoading
+  m_Name: NotifyGameLoading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

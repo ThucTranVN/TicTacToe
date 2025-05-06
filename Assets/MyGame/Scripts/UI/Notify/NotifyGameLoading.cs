@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScreenLoading : BaseScreen
+public class NotifyGameLoading : BaseNotify
 {
     [SerializeField] private Slider m_SliderLoading;
     [SerializeField] private TextMeshProUGUI m_TextLoading;
