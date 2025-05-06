@@ -29,3 +29,6 @@ MonoBehaviour:
   labelColorSelected: {r: 0, g: 0.8441336, b: 1, a: 1}
   labelColorUnselected: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   scrollTweenDuration: 0.35
+  timeFakeLoading: 2
+  timeHideCanvasGroup: 1
+  timeDoAnimationText: 0.3
