@@ -31,7 +31,7 @@ public class NotifyGameLoading : BaseNotify
             {
                 if (UIManager.HasInstance)
                 {
-                    UIManager.Instance.ShowScreen<ScreenBoardSelection>();
+                    UIManager.Instance.ShowScreen<ScreenMenuGame>();
                 }
                 m_DotSequence.Kill();
             });
