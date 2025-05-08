@@ -15,8 +15,6 @@ public class ScreenBoardSelection : BaseScreen
     public Button pvpButton;
     public Button pveButton;
     public Button backButton;
-    public Button infoButton;
-    public Button menuButton;
 
 
     private List<BoardViewItem> boardViewItems = new List<BoardViewItem>();
@@ -172,6 +170,7 @@ public class ScreenBoardSelection : BaseScreen
         if(UIManager.HasInstance)
         {
             UIManager.Instance.ShowScreen<ScreenMenuGame>();
+            this.Hide();
         }    
     }    
 

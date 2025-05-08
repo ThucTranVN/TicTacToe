@@ -15,6 +15,7 @@ public class ScreenMenuGame : BaseScreen
         if(UIManager.HasInstance)
         {
             UIManager.Instance.ShowScreen<ScreenBoardSelection>();
+            this.Hide();
         }    
     }    
 }
