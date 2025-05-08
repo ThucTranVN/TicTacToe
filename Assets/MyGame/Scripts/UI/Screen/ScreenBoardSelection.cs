@@ -14,6 +14,8 @@ public class ScreenBoardSelection : BaseScreen
     public Button rightButton;
     public Button pvpButton;
     public Button pveButton;
+    public Button backButton;
+
 
     private List<BoardViewItem> boardViewItems = new List<BoardViewItem>();
     private List<BoardType> boardTypes = new List<BoardType>();
@@ -45,6 +47,7 @@ public class ScreenBoardSelection : BaseScreen
         rightButton.onClick.AddListener(() => MoveBoard(Direction.Right));
         pvpButton.onClick.AddListener(() => EnterGameMode(GameMode.PVP));
         pveButton.onClick.AddListener(() => EnterGameMode(GameMode.PVE));
+        backButton.onClick.AddListener(OnClickBackButton);
     }
 
     private void InitBoardTypes()
@@ -162,6 +165,14 @@ public class ScreenBoardSelection : BaseScreen
             GameManager.Instance.StartGame(mode, currentBoardType);
         }
     }
+    private void OnClickBackButton()
+    {
+        if(UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowScreen<ScreenMenuGame>();
+            this.Hide();
+        }    
+    }    
 
     private void UpdateButtonVisibility(int index)
     {
