@@ -504,6 +504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rtWrapper: {fileID: 0}
   m_PlayBtn: {fileID: 1744750186506212635}
+  m_MenuBtn: {fileID: 608110625309195276}
 --- !u!1 &6247672427291274471
 GameObject:
   m_ObjectHideFlags: 0
