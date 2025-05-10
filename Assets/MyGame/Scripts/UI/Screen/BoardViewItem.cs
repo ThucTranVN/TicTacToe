@@ -54,11 +54,12 @@ public class BoardViewItem : MonoBehaviour
         if (DataManager.HasInstance)
         {
             float distance = Mathf.Abs(normalizedScrollPos - NormalizedPosition);
-            float targetScale = Mathf.Clamp(
-                1f - distance * DataManager.Instance.GlobalConfig.scaleFactor,
-                DataManager.Instance.GlobalConfig.scaleMin,
-                DataManager.Instance.GlobalConfig.scaleSelected
+            float targetScale = Mathf.Lerp(
+                DataManager.Instance.GlobalConfig.scaleSelected, 
+                DataManager.Instance.GlobalConfig.scaleMin, 
+                Mathf.Clamp01(distance) 
             );
+
             AnimateScale(targetScale);
         }
         else
@@ -66,6 +67,7 @@ public class BoardViewItem : MonoBehaviour
             Debug.LogWarning("DataManager chưa được khởi tạo khi UpdateScale.");
         }
     }
+
 
     public void SetSelected(bool isSelected)
     {

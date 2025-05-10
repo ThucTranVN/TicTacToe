@@ -35,7 +35,7 @@ public enum BoardType
 
 public enum Direction
 {
-    Unknow = 0,
+    Unknown = 0,
     Up,
     Down,
     Left,
@@ -44,7 +44,20 @@ public enum Direction
 
 public enum GameMode
 {
-    Unknow = 0,
+    Unknown = 0,
     PVP,
     PVE
+}
+
+public enum TileState
+{
+    Unknown = 0,
+    O,
+    X
+}
+
+public enum Player
+{
+    PlayerA,  
+    PlayerB   
 }
