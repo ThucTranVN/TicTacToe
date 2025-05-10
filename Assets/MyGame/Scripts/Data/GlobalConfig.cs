@@ -38,4 +38,8 @@ public class GlobalConfig : ScriptableObject
     public float timeFakeLoading;
     public float timeHideCanvasGroup;
     public float timeDoAnimationText;
+
+    [Header("String Intruction")]
+    [TextArea(20,20)]
+    public string instructionInfo;
 }
