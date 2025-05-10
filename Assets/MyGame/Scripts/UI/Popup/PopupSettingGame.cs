@@ -8,9 +8,9 @@ public class PopupSettingGame : BasePopup
     [SerializeField] private Button m_ShopButton;
     [SerializeField] private Button m_MusicButton;
     [SerializeField] private Button m_LanguageButton;
-    [SerializeField] private Button m_BgmButton;
-    [SerializeField] private Button m_SfxButton;
-    [SerializeField] private Button m_VibrationButton;
+    [SerializeField] private Toggle m_BgmToggle;
+    [SerializeField] private Toggle m_SfxToggle;
+    [SerializeField] private Toggle m_VibrationToggle;
 
     private void Start()
     {
