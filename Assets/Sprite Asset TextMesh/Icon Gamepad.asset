@@ -53,7 +53,7 @@ MonoBehaviour:
       m_HorizontalAdvance: 512
     m_GlyphRect:
       m_X: 0
-      m_Y: -100
+      m_Y: -105
       m_Width: 512
       m_Height: 512
     m_Scale: 1.5

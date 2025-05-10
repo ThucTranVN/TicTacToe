@@ -32,19 +32,17 @@ MonoBehaviour:
   timeFakeLoading: 2
   timeHideCanvasGroup: 1
   timeDoAnimationText: 0.3
-  instructionInfo: " \"<size=150%><b><color=#FFD700><sprite name=\"Icon Gamepad\">
-    How to Play Tic Tac Toe</color></b></size>\\n\\n\" +\n    \"<b><color=#00FFFF>1.
-    Game Objective:</color></b>\\n\" +\n    \"Be the first to get <b><color=#00FF00>three
-    marks in a row</color></b> (horizontally, vertically, or diagonally).\\n\\n\"
-    +\n    \"<b><color=#00FFFF>2. How to Play:</color></b>\\n\" +\n    \"\u2022 The
-    game is played on a <b>3\xD73 grid</b>.\\n\" +\n    \"\u2022 Players take turns
-    placing their mark: <b>X</b> or <b>O</b>.\\n\" +\n    \"\u2022 <b>Player 1</b>
-    is <color=#FF69B4>X</color>, <b>Player 2</b> (or AI) is <color=#1E90FF>O</color>.\\n\"
-    +\n    \"\u2022 Tap an empty square to place your mark.\\n\\n\" +\n    \"<b><color=#00FFFF>3.
-    Winning the Game:</color></b>\\n\" +\n    \"Get three of your marks in a row
-    before your opponent!\\n\\n\" +\n    \"<b><color=#00FFFF>4. Game Ends When:</color></b>\\n\"
-    +\n    \"\u2022 One player wins, or\\n\" +\n    \"\u2022 All squares are filled
-    \u2014 it's a <b><color=#FFA500>draw</color></b>.\\n\\n\" +\n    \"<b><color=#00FFFF>5.
-    Tips:</color></b>\\n\" +\n    \"\u2022 Block your opponent\u2019s moves.\\n\"
-    +\n    \"\u2022 Think ahead to set up winning combinations.\\n\\n\" +\n    \"<i><color=#AAAAAA>
-    Enjoy the game!</color></i>\";\n"
+  instructionInfo: "<size=130%><b><color=#FFD700><sprite index=0 tint=1>How to Play
+    Tic Tac Toe</color></b></size>\\n\\n\n    <b><color=#00FFFF>1. Game Objective:</color></b>\\n\n   
+    Be the first to get <b><color=#00FF00>three marks in a row</color></b> (horizontally,
+    vertically, or diagonally).\\n\\n\n    <b><color=#00FFFF>2. How to Play:</color></b>\\n\n   
+    \u2022 The game is played on a <b>3\xD73 grid</b>.\\n\n    \u2022 Players take
+    turns placing their mark: <b>X</b> or <b>O</b>.\\n\n    \u2022 <b>Player 1</b>
+    is <color=#FF69B4>X</color>, <b>Player 2</b> (or AI) is <color=#1E90FF>O</color>.\\n\n   
+    \u2022 Tap an empty square to place your mark.\\n\\n\n    <b><color=#00FFFF>3.
+    Winning the Game:</color></b>\\n\n    Get three of your marks in a row before
+    your opponent!\\n\\n\n    <b><color=#00FFFF>4. Game Ends When:</color></b>\\n\n   
+    \u2022 One player wins, or\\n\n    \u2022 All squares are filled \u2014 it's
+    a <b><color=#FFA500>draw</color></b>.\\n\\n\n    <b><color=#00FFFF>5. Tips:</color></b>\\n\n   
+    \u2022 Block your opponent\u2019s moves.\\n\n    \u2022 Think ahead to set up
+    winning combinations.\\n\\n\n    <i><color=#AAAAAA> Enjoy the game!</color></i>\n"

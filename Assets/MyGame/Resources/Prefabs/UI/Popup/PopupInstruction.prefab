@@ -644,8 +644,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 174045756787475481}
   m_HandleRect: {fileID: 3748685212680172020}
   m_Direction: 2
-  m_Value: 0.9980555
-  m_Size: 0.47388873
+  m_Value: 1.0000567
+  m_Size: 0.4738455
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -775,7 +775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -470}
+  m_AnchoredPosition: {x: 0, y: -471.88852}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &8547038169883864684
@@ -806,8 +806,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: " <size=130%><b><color=#FFD700><sprite index=0 tint=1> How to Play Tic
-    Tac Toe</color></b></size>\\n\\n\n    <b><color=#00FFFF>1. Game Objective:</color></b>\\n\n   
+  m_text: "<size=130%><b><color=#FFD700><sprite index=0 tint=1>How to Play Tic Tac
+    Toe</color></b></size>\\n\\n\n    <b><color=#00FFFF>1. Game Objective:</color></b>\\n\n   
     Be the first to get <b><color=#00FF00>three marks in a row</color></b> (horizontally,
     vertically, or diagonally).\\n\\n\n    <b><color=#00FFFF>2. How to Play:</color></b>\\n\n   
     \u2022 The game is played on a <b>3\xD73 grid</b>.\\n\n    \u2022 Players take
@@ -957,6 +957,7 @@ MonoBehaviour:
   m_ExitButton: {fileID: 1578863436875781706}
   m_ContentTxt: {fileID: 4130524640424692169}
   globalConfig: {fileID: 11400000, guid: 11494ba134bab4a9f88c076082650f9d, type: 2}
+  m_ContentRect: {fileID: 1541058631750874937}
 --- !u!1 &9059806092760953453
 GameObject:
   m_ObjectHideFlags: 0
