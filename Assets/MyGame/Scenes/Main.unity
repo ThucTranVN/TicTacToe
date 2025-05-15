@@ -174,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 9179732572381506254, guid: 11edae530da8f4d4780b1a1744a402c8, type: 3}
       propertyPath: winLinePrefab
       value: 
-      objectReference: {fileID: 7581328964874314814, guid: 2f4cef50bcf3bde4eb628435439ab2ea, type: 3}
+      objectReference: {fileID: 9027988082842694934, guid: 835152eabcb84c3489590a910c6503e0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

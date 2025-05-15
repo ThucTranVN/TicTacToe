@@ -70,9 +70,9 @@ public class BoardController : BaseManager<BoardController>
         Vector2 cameraPosition = new((float)(width - 1) / 2f, (float)(height - 1) / 2f);
         Camera.main.transform.position = new Vector3(cameraPosition.x, cameraPosition.y, -10);
         float aspectRatio = (float)Screen.width / (float)Screen.height;
-        float verticleSize = (float)height / 2f + (float)borderSize;
+        float verticalSize = (float)height / 2f + (float)borderSize;
         float horizontalSize = ((float)width / 2f + (float)borderSize) / aspectRatio;
-        Camera.main.orthographicSize = (verticleSize > horizontalSize) ? verticleSize : horizontalSize;
+        Camera.main.orthographicSize = (verticalSize > horizontalSize) ? verticalSize : horizontalSize;
     }
 
     public void OnTileClicked(Tile tile)
@@ -80,7 +80,16 @@ public class BoardController : BaseManager<BoardController>
         if (isGameOver || tile.state != TileState.Unknown)
             return;
 
-        TileState playerState = (currentPlayer == Player.PlayerA) ? TileState.O : TileState.X;
+        TileState playerState;
+
+        if (currentPlayer == Player.PlayerA)
+        {
+            playerState = TileState.O;
+        }
+        else
+        {
+            playerState = TileState.X;
+        }
         tile.SetState(playerState);
 
         if (CheckWin(tile, playerState))
@@ -89,24 +98,37 @@ public class BoardController : BaseManager<BoardController>
             isGameOver = true;
             return;
         }
-
-        currentPlayer = (currentPlayer == Player.PlayerA) ? Player.PlayerB : Player.PlayerA;
+        if (currentPlayer == Player.PlayerA)
+        {
+            currentPlayer = Player.PlayerB;
+        }
+        else
+        {
+            currentPlayer = Player.PlayerA;
+        }
     }
 
     private bool CheckWin(Tile tile, TileState state)
     {
         winningTiles.Clear();
 
-        return CheckDirection(tile, state, 1, 0) ||  
-               CheckDirection(tile, state, 0, 1) ||  
-               CheckDirection(tile, state, 1, 1) ||  
-               CheckDirection(tile, state, 1, -1);   
+        CheckWinDirection[] directions = (CheckWinDirection[])System.Enum.GetValues(typeof(CheckWinDirection));
+        for (int i = 0; i < directions.Length; i++)
+        {
+            if (CheckDirection(tile, state, directions[i]))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    private bool CheckDirection(Tile tile, TileState state, int dx, int dy)
+    private bool CheckDirection(Tile tile, TileState state, CheckWinDirection direction)
     {
-        List<Tile> matched = new() { tile };
+        var (dx, dy) = GetDirectionOffset(direction);
 
+        List<Tile> matched = new() { tile };
         matched.AddRange(CollectTiles(tile, state, dx, dy));
         matched.AddRange(CollectTiles(tile, state, -dx, -dy));
 
@@ -150,6 +172,18 @@ public class BoardController : BaseManager<BoardController>
             9 => 5,
             11 => 5,
             _ => 3
+        };
+    }
+
+    private (int dx, int dy) GetDirectionOffset(CheckWinDirection direction)
+    {
+        return direction switch
+        {
+            CheckWinDirection.Horizontal => (1, 0),
+            CheckWinDirection.Vertical => (0, 1),
+            CheckWinDirection.DiagonalRight => (1, 1),
+            CheckWinDirection.DiagonalLeft => (1, -1),
+            _ => (0, 0)
         };
     }
 }
