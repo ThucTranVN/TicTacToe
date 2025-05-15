@@ -61,11 +61,3 @@ public enum Player
     PlayerA,  
     PlayerB   
 }
-
-public enum CheckWinDirection
-{
-    Horizontal,    
-    Vertical,      
-    DiagonalRight, 
-    DiagonalLeft   
-}
