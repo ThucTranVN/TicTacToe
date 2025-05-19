@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BoardController : BaseManager<BoardController>
 {
+    public GameObject winLinePrefab;
     public GameObject tilePrefab;
     public int borderSize;
 
@@ -80,21 +83,20 @@ public class BoardController : BaseManager<BoardController>
         if (isGameOver || tile.state != TileState.Unknown)
             return;
 
-        TileState playerState;
-
-        if (currentPlayer == Player.PlayerA)
-        {
-            playerState = TileState.O;
-        }
-        else
-        {
-            playerState = TileState.X;
-        }
+        TileState playerState = currentPlayer == Player.PlayerA ? TileState.O : TileState.X;
         tile.SetState(playerState);
 
-        if (CheckWin(tile, playerState))
+        int winCount = CheckWin(tile, playerState);
+
+        if (winCount > 0)
         {
-            Debug.Log($"{currentPlayer} WIN!");
+            Debug.Log($"{currentPlayer} WIN with {winCount} line(s)!");
+            isGameOver = true;
+            return;
+        }
+        if (IsBoardFull())
+        {
+            Debug.Log("DRAW! No more moves.");
             isGameOver = true;
             return;
         }
@@ -108,38 +110,66 @@ public class BoardController : BaseManager<BoardController>
         }
     }
 
-    private bool CheckWin(Tile tile, TileState state)
+    private bool IsBoardFull()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (tiles[x, y].state == TileState.Unknown)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private int CheckWin(Tile tile, TileState state)
     {
         winningTiles.Clear();
 
         CheckWinDirection[] directions = (CheckWinDirection[])System.Enum.GetValues(typeof(CheckWinDirection));
+        int totalWinCount = 0;
+
         for (int i = 0; i < directions.Length; i++)
         {
-            if (CheckDirection(tile, state, directions[i]))
+            List<Tile> matched;
+            int winCount = CheckDirection(tile, state, directions[i], out matched);
+
+            if (winCount > 0)
             {
-                return true;
+                totalWinCount += winCount;
+
+                for (int j = 0; j < matched.Count; j++)
+                {
+                    winningTiles.Add(matched[j]);
+                }
+
+                DrawWinLine(matched);
             }
         }
 
-        return false;
+        return totalWinCount;
     }
 
-    private bool CheckDirection(Tile tile, TileState state, CheckWinDirection direction)
+    private int CheckDirection(Tile tile, TileState state, CheckWinDirection direction, out List<Tile> matchedTiles)
     {
+        matchedTiles = new List<Tile>();
         var (dx, dy) = GetDirectionOffset(direction);
 
         List<Tile> matched = new() { tile };
         matched.AddRange(CollectTiles(tile, state, dx, dy));
         matched.AddRange(CollectTiles(tile, state, -dx, -dy));
 
+        int nearCount = matched.Count - 1;
         int winLength = GetWinLengthFromBoardSize(width);
-        if (matched.Count >= winLength)
+
+        if (nearCount >= winLength - 1)
         {
-            winningTiles = matched;
-            return true;
+            matchedTiles = matched;
+            return 1;
         }
 
-        return false;
+        return 0;
     }
 
     private List<Tile> CollectTiles(Tile tile, TileState state, int dx, int dy)
@@ -185,5 +215,55 @@ public class BoardController : BaseManager<BoardController>
             CheckWinDirection.DiagonalLeft => (1, -1),
             _ => (0, 0)
         };
+    }
+
+    private void DrawWinLine(List<Tile> matched)
+    {
+        if (matched == null || matched.Count < 2 || winLinePrefab == null)
+            return;
+
+        if (DataManager.HasInstance)
+        {
+            matched.Sort((a, b) =>
+            {
+                if (a.xIndex == b.xIndex)
+                    return a.yIndex.CompareTo(b.yIndex);
+                return a.xIndex.CompareTo(b.xIndex);
+            });
+
+            Vector3 start = matched[0].transform.position;
+            Vector3 end = matched[matched.Count - 1].transform.position;
+
+            GameObject lineObject = Instantiate(winLinePrefab, Vector3.zero, Quaternion.identity, this.transform);
+            lineObject.transform.SetAsLastSibling();
+            LineRenderer lr = lineObject.GetComponent<LineRenderer>();
+            lr.startColor = DataManager.Instance.GlobalConfig.winLineColor;
+            lr.endColor = DataManager.Instance.GlobalConfig.winLineColor;
+            lr.startWidth = DataManager.Instance.GlobalConfig.winLineWidth;
+            lr.endWidth = DataManager.Instance.GlobalConfig.winLineWidth;
+            lr.sortingLayerName = "UI";  
+            lr.sortingOrder = 10;        
+            lr.positionCount = 2;
+            lr.SetPosition(0, start);
+            lr.SetPosition(1, start);
+            StartCoroutine(AnimateLine(lr, start, end, 0.5f));
+        }
+    }
+
+
+    private IEnumerator AnimateLine(LineRenderer lr, Vector3 start, Vector3 end, float duration)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            Vector3 current = Vector3.Lerp(start, end, t);
+            lr.SetPosition(1, current);
+            yield return null;
+        }
+
+        lr.SetPosition(1, end);
     }
 }

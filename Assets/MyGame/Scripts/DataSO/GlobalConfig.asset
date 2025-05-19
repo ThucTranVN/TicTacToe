@@ -18,8 +18,6 @@ MonoBehaviour:
   spriteSize6x6: {fileID: 21300000, guid: f0f86075c3b0b2f41a8569e291744dca, type: 3}
   spriteSize9x9: {fileID: 21300000, guid: ea271205336c2cc49b3d16eee3436870, type: 3}
   spriteSize11x11: {fileID: 21300000, guid: b4b2b29a0050d084f89d55a1d61b76fd, type: 3}
-  O: {fileID: 21300000, guid: c419955a2bb983b4f9ca9a3daccdff37, type: 3}
-  X: {fileID: 21300000, guid: 839a1f898595fa64fadea7b669b2efcc, type: 3}
   BoardViewItemPrefab: {fileID: 6377972032354418782, guid: ce146ef76d082f34ab2e766f0c35f10d, type: 3}
   scaleTweenDuration: 0.3
   scaleSelected: 1.1
@@ -31,3 +29,5 @@ MonoBehaviour:
   labelColorSelected: {r: 0, g: 0.8441336, b: 1, a: 1}
   labelColorUnselected: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   scrollTweenDuration: 0.35
+  winLineColor: {r: 0.3274203, g: 1, b: 0.0047169924, a: 1}
+  winLineWidth: 0.2
