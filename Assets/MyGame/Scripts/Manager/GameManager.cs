@@ -1,5 +1,10 @@
+using UnityEngine;
+
 public class GameManager : BaseManager<GameManager>
 {
+    private GameMode currentGameMode = GameMode.Unknown;
+
+    public  GameMode _currentGameMode => currentGameMode;
     private void Start()
     {
         if (UIManager.HasInstance)
@@ -10,6 +15,10 @@ public class GameManager : BaseManager<GameManager>
 
     public void StartGame(GameMode gameMode, BoardType boardType)
     {
+        currentGameMode = gameMode;
+
+        Debug.Log($"[GameManager] StartGame with mode: {currentGameMode}, board: {boardType}");
+
         if (BoardController.HasInstance)
         {
             BoardController.Instance.InitBoard(boardType);

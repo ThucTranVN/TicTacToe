@@ -17,8 +17,20 @@ public class BoardController : BaseManager<BoardController>
     private const string PREFAB_TILE_PATH = "Prefabs/Tile/TilePrefab";
     private Player currentPlayer = Player.PlayerA;
     private bool isGameOver = false;
+    [SerializeField]
+    private GameMode gameMode = GameMode.Unknown;
+    private GameMode currentGameMode;
+
+    private static readonly Vector2Int Horizontal = new Vector2Int(1, 0);
+    private static readonly Vector2Int Vertical = new Vector2Int(0, 1);
+    private static readonly Vector2Int DiagonalRight = new Vector2Int(1, 1);
+    private static readonly Vector2Int DiagonalLeft = new Vector2Int(1, -1);
 
     private List<Tile> winningTiles = new();
+
+    private const int MaxWinLines = 4;//
+    private List<GameObject> winLineObjects = new();//
+    private int usedWinLineCount = 0;//
 
     private void Start()
     {
@@ -30,12 +42,15 @@ public class BoardController : BaseManager<BoardController>
 
     public void InitBoard(BoardType boardType)
     {
+        currentGameMode = gameMode;
         if (boardType == BoardType.Unknown)
         {
             boardType = defaultBoardType;
         }
         SetupBoardType(boardType);
         SetupCameraPosition();
+        InitWinLines();
+        ResetWinLines();
     }
 
     private void SetupBoardType(BoardType boardType)
@@ -94,45 +109,60 @@ public class BoardController : BaseManager<BoardController>
             isGameOver = true;
             return;
         }
+
         if (IsBoardFull())
         {
             Debug.Log("DRAW! No more moves.");
             isGameOver = true;
             return;
         }
-        if (currentPlayer == Player.PlayerA)
+
+        SwitchPlayer();
+    }
+    private void SwitchPlayer()
+    {
+        switch (GameManager.Instance._currentGameMode)
         {
-            currentPlayer = Player.PlayerB;
-        }
-        else
-        {
-            currentPlayer = Player.PlayerA;
+            case GameMode.PVP:
+                if (currentPlayer == Player.PlayerA)
+                {
+                    currentPlayer = Player.PlayerB;
+                }
+                else
+                {
+                    currentPlayer = Player.PlayerA;
+                }
+                break;
+
+            case GameMode.PVE:
+
+                break;
+
+            case GameMode.Unknown:
+            default:
+                Debug.LogWarning("Chế độ chơi chưa xác định. Không thể chuyển lượt.");
+                break;
         }
     }
 
     private bool IsBoardFull()
     {
-        for (int x = 0; x < width; x++)
+        foreach (Tile tile in tiles)
         {
-            for (int y = 0; y < height; y++)
-            {
-                if (tiles[x, y].state == TileState.Unknown)
-                    return false;
-            }
+            if (tile.state == TileState.Unknown) return false;
         }
         return true;
     }
 
     private int CheckWin(Tile tile, TileState state)
     {
-        winningTiles.Clear();
-
+        //winningTiles.Clear(); // to do: move cai logic nay khi hien popup thang thua
         CheckWinDirection[] directions = (CheckWinDirection[])System.Enum.GetValues(typeof(CheckWinDirection));
         int totalWinCount = 0;
 
         for (int i = 0; i < directions.Length; i++)
         {
-            List<Tile> matched;
+            List<Tile> matched = new();
             int winCount = CheckDirection(tile, state, directions[i], out matched);
 
             if (winCount > 0)
@@ -141,7 +171,10 @@ public class BoardController : BaseManager<BoardController>
 
                 for (int j = 0; j < matched.Count; j++)
                 {
-                    winningTiles.Add(matched[j]);
+                    if (!winningTiles.Contains(matched[j]))
+                    {
+                        winningTiles.Add(matched[j]);
+                    }
                 }
 
                 DrawWinLine(matched);
@@ -154,11 +187,11 @@ public class BoardController : BaseManager<BoardController>
     private int CheckDirection(Tile tile, TileState state, CheckWinDirection direction, out List<Tile> matchedTiles)
     {
         matchedTiles = new List<Tile>();
-        var (dx, dy) = GetDirectionOffset(direction);
+        Vector2Int dir = GetDirectionOffset(direction);
 
         List<Tile> matched = new() { tile };
-        matched.AddRange(CollectTiles(tile, state, dx, dy));
-        matched.AddRange(CollectTiles(tile, state, -dx, -dy));
+        matched.AddRange(CollectTiles(tile, state, dir));
+        matched.AddRange(CollectTiles(tile, state, -dir));
 
         int nearCount = matched.Count - 1;
         int winLength = GetWinLengthFromBoardSize(width);
@@ -172,17 +205,20 @@ public class BoardController : BaseManager<BoardController>
         return 0;
     }
 
-    private List<Tile> CollectTiles(Tile tile, TileState state, int dx, int dy)
+    private List<Tile> CollectTiles(Tile start, TileState state, Vector2Int dir)
     {
-        List<Tile> result = new();
-        int x = tile.xIndex + dx;
-        int y = tile.yIndex + dy;
-
-        while (IsInBounds(x, y) && tiles[x, y].state == state)
+        List<Tile> result = new List<Tile>();
+        int x = start.xIndex + dir.x;
+        int y = start.yIndex + dir.y;
+        while (true)
         {
+            if (!IsInBounds(x, y) || tiles[x, y].state != state)
+            {
+                break;
+            }
             result.Add(tiles[x, y]);
-            x += dx;
-            y += dy;
+            x += dir.x;
+            y += dir.y;
         }
 
         return result;
@@ -205,49 +241,75 @@ public class BoardController : BaseManager<BoardController>
         };
     }
 
-    private (int dx, int dy) GetDirectionOffset(CheckWinDirection direction)
+    private Vector2Int GetDirectionOffset(CheckWinDirection direction)
     {
         return direction switch
         {
-            CheckWinDirection.Horizontal => (1, 0),
-            CheckWinDirection.Vertical => (0, 1),
-            CheckWinDirection.DiagonalRight => (1, 1),
-            CheckWinDirection.DiagonalLeft => (1, -1),
-            _ => (0, 0)
+            CheckWinDirection.Horizontal => Horizontal,
+            CheckWinDirection.Vertical => Vertical,
+            CheckWinDirection.DiagonalRight => DiagonalRight,
+            CheckWinDirection.DiagonalLeft => DiagonalLeft,
+            _ => Vector2Int.zero
         };
+    }
+
+    private void InitWinLines()
+    {
+        if (winLinePrefab == null) return;
+
+        for (int i = 0; i < MaxWinLines; i++)
+        {
+            GameObject lineObject = Instantiate(winLinePrefab, Vector3.zero, Quaternion.identity, this.transform);
+            lineObject.SetActive(false);
+            winLineObjects.Add(lineObject);
+        }
+    }
+
+    private void ResetWinLines()
+    {
+        usedWinLineCount = 0;
+        foreach (var obj in winLineObjects)
+        {
+            obj.SetActive(false);
+        }
     }
 
     private void DrawWinLine(List<Tile> matched)
     {
-        if (matched == null || matched.Count < 2 || winLinePrefab == null)
+        if (matched == null || matched.Count < 2 || winLineObjects.Count == 0 || usedWinLineCount >= MaxWinLines)
             return;
 
         if (DataManager.HasInstance)
         {
             matched.Sort((a, b) =>
-            {
-                if (a.xIndex == b.xIndex)
-                    return a.yIndex.CompareTo(b.yIndex);
-                return a.xIndex.CompareTo(b.xIndex);
-            });
+                   {
+                       if (a.xIndex == b.xIndex)
+                           return a.yIndex.CompareTo(b.yIndex);
+                       return a.xIndex.CompareTo(b.xIndex);
+                   });
 
             Vector3 start = matched[0].transform.position;
             Vector3 end = matched[matched.Count - 1].transform.position;
 
-            GameObject lineObject = Instantiate(winLinePrefab, Vector3.zero, Quaternion.identity, this.transform);
+            GameObject lineObject = winLineObjects[usedWinLineCount++];
+            lineObject.SetActive(true);
             lineObject.transform.SetAsLastSibling();
+
             LineRenderer lr = lineObject.GetComponent<LineRenderer>();
             lr.startColor = DataManager.Instance.GlobalConfig.winLineColor;
             lr.endColor = DataManager.Instance.GlobalConfig.winLineColor;
             lr.startWidth = DataManager.Instance.GlobalConfig.winLineWidth;
             lr.endWidth = DataManager.Instance.GlobalConfig.winLineWidth;
-            lr.sortingLayerName = "UI";  
-            lr.sortingOrder = 10;        
+            lr.sortingLayerName = "UI";
+            lr.sortingOrder = 10;
             lr.positionCount = 2;
             lr.SetPosition(0, start);
             lr.SetPosition(1, start);
+
             StartCoroutine(AnimateLine(lr, start, end, 0.5f));
         }
+
+
     }
 
 
