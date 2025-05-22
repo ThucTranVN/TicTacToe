@@ -4,7 +4,7 @@ public class GameManager : BaseManager<GameManager>
 {
     private GameMode currentGameMode = GameMode.Unknown;
 
-    public  GameMode _currentGameMode => currentGameMode;
+    public  GameMode CurrenGameMode => currentGameMode;
     private void Start()
     {
         if (UIManager.HasInstance)

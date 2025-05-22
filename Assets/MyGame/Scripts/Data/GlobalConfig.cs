@@ -37,4 +37,8 @@ public class GlobalConfig : ScriptableObject
     [Header("Win Line Settings")]
     public Color winLineColor = Color.green;
     public float winLineWidth = 0.2f;
+    public string winLineSortingLayerName = "UI";
+    public int winLineSortingOrder = 10;
+    public float winLineDrawDuration = 0.5f;
+    public int winLinePositionCount = 2;
 }

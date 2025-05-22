@@ -17,9 +17,6 @@ public class BoardController : BaseManager<BoardController>
     private const string PREFAB_TILE_PATH = "Prefabs/Tile/TilePrefab";
     private Player currentPlayer = Player.PlayerA;
     private bool isGameOver = false;
-    [SerializeField]
-    private GameMode gameMode = GameMode.Unknown;
-    private GameMode currentGameMode;
 
     private static readonly Vector2Int Horizontal = new Vector2Int(1, 0);
     private static readonly Vector2Int Vertical = new Vector2Int(0, 1);
@@ -28,9 +25,9 @@ public class BoardController : BaseManager<BoardController>
 
     private List<Tile> winningTiles = new();
 
-    private const int MaxWinLines = 4;//
-    private List<GameObject> winLineObjects = new();//
-    private int usedWinLineCount = 0;//
+    private int maxWinLines => System.Enum.GetValues(typeof(CheckWinDirection)).Length;
+    private List<GameObject> winLineObjects = new();
+    private int usedWinLineCount = 0;
 
     private void Start()
     {
@@ -42,7 +39,6 @@ public class BoardController : BaseManager<BoardController>
 
     public void InitBoard(BoardType boardType)
     {
-        currentGameMode = gameMode;
         if (boardType == BoardType.Unknown)
         {
             boardType = defaultBoardType;
@@ -121,28 +117,32 @@ public class BoardController : BaseManager<BoardController>
     }
     private void SwitchPlayer()
     {
-        switch (GameManager.Instance._currentGameMode)
+        if (GameManager.HasInstance)
         {
-            case GameMode.PVP:
-                if (currentPlayer == Player.PlayerA)
-                {
-                    currentPlayer = Player.PlayerB;
-                }
-                else
-                {
-                    currentPlayer = Player.PlayerA;
-                }
-                break;
+            switch (GameManager.Instance.CurrenGameMode)
+            {
+                case GameMode.PVP:
+                    if (currentPlayer == Player.PlayerA)
+                    {
+                        currentPlayer = Player.PlayerB;
+                    }
+                    else
+                    {
+                        currentPlayer = Player.PlayerA;
+                    }
+                    break;
 
-            case GameMode.PVE:
+                case GameMode.PVE:
 
-                break;
+                    break;
 
-            case GameMode.Unknown:
-            default:
-                Debug.LogWarning("Chế độ chơi chưa xác định. Không thể chuyển lượt.");
-                break;
+                case GameMode.Unknown:
+                default:
+                    Debug.LogWarning("Chế độ chơi chưa xác định. Không thể chuyển lượt.");
+                    break;
+            }
         }
+
     }
 
     private bool IsBoardFull()
@@ -257,7 +257,7 @@ public class BoardController : BaseManager<BoardController>
     {
         if (winLinePrefab == null) return;
 
-        for (int i = 0; i < MaxWinLines; i++)
+        for (int i = 0; i < maxWinLines; i++)
         {
             GameObject lineObject = Instantiate(winLinePrefab, Vector3.zero, Quaternion.identity, this.transform);
             lineObject.SetActive(false);
@@ -276,7 +276,7 @@ public class BoardController : BaseManager<BoardController>
 
     private void DrawWinLine(List<Tile> matched)
     {
-        if (matched == null || matched.Count < 2 || winLineObjects.Count == 0 || usedWinLineCount >= MaxWinLines)
+        if (matched == null || matched.Count < 2 || winLineObjects.Count == 0 || usedWinLineCount >= maxWinLines)
             return;
 
         if (DataManager.HasInstance)
@@ -300,13 +300,13 @@ public class BoardController : BaseManager<BoardController>
             lr.endColor = DataManager.Instance.GlobalConfig.winLineColor;
             lr.startWidth = DataManager.Instance.GlobalConfig.winLineWidth;
             lr.endWidth = DataManager.Instance.GlobalConfig.winLineWidth;
-            lr.sortingLayerName = "UI";
-            lr.sortingOrder = 10;
-            lr.positionCount = 2;
+            lr.sortingLayerName = DataManager.Instance.GlobalConfig.winLineSortingLayerName;
+            lr.sortingOrder = DataManager.Instance.GlobalConfig.winLineSortingOrder;
+            lr.positionCount = DataManager.Instance.GlobalConfig.winLinePositionCount;
             lr.SetPosition(0, start);
             lr.SetPosition(1, start);
 
-            StartCoroutine(AnimateLine(lr, start, end, 0.5f));
+            StartCoroutine(AnimateLine(lr, start, end, DataManager.Instance.GlobalConfig.winLineDrawDuration));
         }
 
 
