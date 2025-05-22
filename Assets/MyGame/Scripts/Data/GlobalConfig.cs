@@ -34,6 +34,14 @@ public class GlobalConfig : ScriptableObject
     [Header("Scroll Settings")]
     public float scrollTweenDuration = 0.35f;
 
+    [Header("Win Line Settings")]
+    public Color winLineColor = Color.green;
+    public float winLineWidth = 0.2f;
+    public string winLineSortingLayerName = "UI";
+    public int winLineSortingOrder = 10;
+    public float winLineDrawDuration = 0.5f;
+    public int winLinePositionCount = 2;
+
     [Header("NotifyGameLoadProgress Setting")]
     public float timeFakeLoading;
     public float timeHideCanvasGroup;
