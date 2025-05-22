@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 911f28529c44ab64da39c525d5af6305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winLinePrefab: {fileID: 9045364953712788045, guid: e95bdbaf1d745f140a95e90d547afced, type: 3}
   tilePrefab: {fileID: 1807681191631518981, guid: 4475bae5669e77448b7627faeabd83e9, type: 3}
   borderSize: 2

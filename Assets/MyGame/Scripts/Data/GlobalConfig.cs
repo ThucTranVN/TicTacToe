@@ -41,4 +41,13 @@ public class GlobalConfig : ScriptableObject
     public int winLineSortingOrder = 10;
     public float winLineDrawDuration = 0.5f;
     public int winLinePositionCount = 2;
+
+    [Header("NotifyGameLoadProgress Setting")]
+    public float timeFakeLoading;
+    public float timeHideCanvasGroup;
+    public float timeDoAnimationText;
+
+    [Header("String Intruction")]
+    [TextArea(20,20)]
+    public string instructionInfo;
 }
