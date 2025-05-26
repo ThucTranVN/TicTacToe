@@ -42,4 +42,7 @@ public class GlobalConfig : ScriptableObject
     [Header("String Intruction")]
     [TextArea(20,20)]
     public string instructionInfo;
+
+    [Header("List Music")]
+    public List<AudioClip> soundMusics;
 }
