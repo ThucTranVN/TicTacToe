@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UIStrings_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 1288d1f80261c134f89af29e41fccce4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 12473061376
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15987888128
+    m_Localized: Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18768711680
+    m_Localized: Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 782144622592
+    m_Localized: BACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2039995420672
+    m_Localized: MENU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2305461309440
+    m_Localized: Shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2414328664064
+    m_Localized: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2510197870592
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3989050740736
+    m_Localized: "<size=130%><b><color=#FFD700><sprite index=0 tint=1>How to Play
+      Tic Tac Toe</color></b></size>\\n\\n\n    <b><color=#00FFFF>1. Game Objective:</color></b>\\n\n   
+      Be the first to get <b><color=#00FF00>three marks in a row</color></b> (horizontally,
+      vertically, or diagonally).\\n\\n\n    <b><color=#00FFFF>2. How to Play:</color></b>\\n\n   
+      \u2022 The game is played on a <b>3\xD73 grid</b>.\\n\n    \u2022 Players take
+      turns placing their mark: <b>X</b> or <b>O</b>.\\n\n    \u2022 <b>Player 1</b>
+      is <color=#FF69B4>X</color>, <b>Player 2</b> (or AI) is <color=#1E90FF>O</color>.\\n\n   
+      \u2022 Tap an empty square to place your mark.\\n\\n\n    <b><color=#00FFFF>3.
+      Winning the Game:</color></b>\\n\n    Get three of your marks in a row before
+      your opponent!\\n\\n\n    <b><color=#00FFFF>4. Game Ends When:</color></b>\\n\n   
+      \u2022 One player wins, or\\n\n    \u2022 All squares are filled \u2014 it's
+      a <b><color=#FFA500>draw</color></b>.\\n\\n\n    <b><color=#00FFFF>5. Tips:</color></b>\\n\n   
+      \u2022 Block your opponent\u2019s moves.\\n\n    \u2022 Think ahead to set
+      up winning combinations.\\n\\n\n    <i><color=#AAAAAA> Enjoy the game!</color></i>\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4135700385792
+    m_Localized: INSTRUCTION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4685024186368
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4910195396608
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5003388637184
+    m_Localized: Vietnamese
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9199965949952
+    m_Localized: Loading
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

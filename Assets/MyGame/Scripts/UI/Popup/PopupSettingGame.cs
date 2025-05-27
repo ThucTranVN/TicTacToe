@@ -15,10 +15,17 @@ public class PopupSettingGame : BasePopup
     private void Start()
     {
         m_ExitButton.onClick.AddListener(OnClickExitButton);
+        m_LanguageButton.onClick.AddListener(OnClickLanguageButton);
     }
 
     private void OnClickExitButton()
     {
         this.Hide();
+    }
+
+    private void OnClickLanguageButton()
+    {
+        this.Hide(); 
+        UIManager.Instance.ShowPopup<PopupSelectLanguage>();
     }
 }

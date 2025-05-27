@@ -161,6 +161,7 @@ GameObject:
   - component: {fileID: 355350524908147240}
   - component: {fileID: 2563833557109402877}
   - component: {fileID: 2668680665165283127}
+  - component: {fileID: 5272105350806324136}
   m_Layer: 5
   m_Name: InstructionTxt
   m_TagString: Untagged
@@ -286,6 +287,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5272105350806324136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2521409330338049825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:1288d1f80261c134f89af29e41fccce4
+    m_TableEntryReference:
+      m_KeyId: 4135700385792
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2668680665165283127}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2645115932942935494
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,8 +685,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 174045756787475481}
   m_HandleRect: {fileID: 3748685212680172020}
   m_Direction: 2
-  m_Value: 1.0000567
-  m_Size: 0.4738455
+  m_Value: 0.50000006
+  m_Size: 0.47388873
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -752,6 +793,7 @@ GameObject:
   - component: {fileID: 8547038169883864684}
   - component: {fileID: 4130524640424692169}
   - component: {fileID: 4933761339296703124}
+  - component: {fileID: 4084730132171999176}
   m_Layer: 0
   m_Name: Content
   m_TagString: Untagged
@@ -775,7 +817,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -471.88852}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &8547038169883864684
@@ -904,6 +946,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &4084730132171999176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7298368909361832829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:1288d1f80261c134f89af29e41fccce4
+    m_TableEntryReference:
+      m_KeyId: 3989050740736
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4130524640424692169}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &8936593124622808024
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +1035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2f4cc105e475f4ebc2f288530f2f83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rtWrapper: {fileID: 0}
+  rtWrapper: {fileID: 2256257065847323051}
   m_ExitButton: {fileID: 1578863436875781706}
   m_ContentTxt: {fileID: 4130524640424692169}
   globalConfig: {fileID: 11400000, guid: 11494ba134bab4a9f88c076082650f9d, type: 2}

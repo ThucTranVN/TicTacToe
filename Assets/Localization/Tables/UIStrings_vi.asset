@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UIStrings_vi
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: vi
+  m_SharedData: {fileID: 11400000, guid: 1288d1f80261c134f89af29e41fccce4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 12473061376
+    m_Localized: "Ch\u01A1i"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15987888128
+    m_Localized: "H\u01B0\u1EDBng d\u1EABn"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18768711680
+    m_Localized: "Danh m\u1EE5c"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 782144622592
+    m_Localized: "QUAY L\u1EA0I"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2039995420672
+    m_Localized: "DANH M\u1EE4C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2305461309440
+    m_Localized: "C\u1EEDa h\xE0ng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2414328664064
+    m_Localized: "\xC2m thanh"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2510197870592
+    m_Localized: "Ng\xF4n ng\u1EEF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3989050740736
+    m_Localized: "<size=130%><b><color=#FFD700><sprite index=0 tint=1>C\xE1ch ch\u01A1i
+      C\u1EDD Caro</color></b></size>\\n\\n\r\n<b><color=#00FFFF>1. M\u1EE5c ti\xEAu
+      tr\xF2 ch\u01A1i:</color></b>\\n\r\nTr\u1EDF th\xE0nh ng\u01B0\u1EDDi \u0111\u1EA7u
+      ti\xEAn c\xF3 <b><color=#00FF00>ba d\u1EA5u li\xEAn ti\u1EBFp</color></b> (theo
+      h\xE0ng ngang, d\u1ECDc ho\u1EB7c ch\xE9o).\\n\\n\r\n<b><color=#00FFFF>2. C\xE1ch
+      ch\u01A1i:</color></b>\\n\r\n\u2022 Tr\xF2 ch\u01A1i di\u1EC5n ra tr\xEAn <b>b\xE0n
+      c\u1EDD 3\xD73</b>.\\n\r\n\u2022 Ng\u01B0\u1EDDi ch\u01A1i thay phi\xEAn nhau
+      \u0111\xE1nh d\u1EA5u: <b>X</b> ho\u1EB7c <b>O</b>.\\n\r\n\u2022 <b>Ng\u01B0\u1EDDi
+      ch\u01A1i 1</b> l\xE0 <color=#FF69B4>X</color>, <b>Ng\u01B0\u1EDDi ch\u01A1i
+      2</b> (ho\u1EB7c AI) l\xE0 <color=#1E90FF>O</color>.\\n\r\n\u2022 Ch\u1EA1m
+      v\xE0o \xF4 tr\u1ED1ng \u0111\u1EC3 \u0111\u1EB7t d\u1EA5u c\u1EE7a b\u1EA1n.\\n\\n\r\n<b><color=#00FFFF>3.
+      C\xE1ch gi\xE0nh chi\u1EBFn th\u1EAFng:</color></b>\\n\r\n\u0110\u1EB7t ba
+      d\u1EA5u li\xEAn ti\u1EBFp tr\u01B0\u1EDBc \u0111\u1ED1i th\u1EE7 c\u1EE7a
+      b\u1EA1n!\\n\\n\r\n<b><color=#00FFFF>4. Tr\xF2 ch\u01A1i k\u1EBFt th\xFAc khi:</color></b>\\n\r\n\u2022
+      M\u1ED9t ng\u01B0\u1EDDi ch\u01A1i th\u1EAFng, ho\u1EB7c\\n\r\n\u2022 T\u1EA5t
+      c\u1EA3 c\xE1c \xF4 \u0111\xE3 \u0111\u01B0\u1EE3c \u0111\xE1nh d\u1EA5u \u2014
+      k\u1EBFt qu\u1EA3 l\xE0 <b><color=#FFA500>h\xF2a</color></b>.\\n\\n\r\n<b><color=#00FFFF>5.
+      M\u1EB9o ch\u01A1i:</color></b>\\n\r\n\u2022 Ch\u1EB7n n\u01B0\u1EDBc \u0111i
+      c\u1EE7a \u0111\u1ED1i th\u1EE7.\\n\r\n\u2022 Suy ngh\u0129 tr\u01B0\u1EDBc
+      \u0111\u1EC3 t\u1EA1o ra c\xE1c c\u01A1 h\u1ED9i th\u1EAFng.\\n\\n\r\n<i><color=#AAAAAA>Ch\xFAc
+      b\u1EA1n ch\u01A1i vui v\u1EBB!</color></i>\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4135700385792
+    m_Localized: "H\u01B0\u1EDBng d\u1EABn"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4685024186368
+    m_Localized: "Ng\xF4n ng\u1EEF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4910195396608
+    m_Localized: "Ti\u1EBFng anh"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5003388637184
+    m_Localized: "Ti\u1EBFng vi\u1EC7t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9199965949952
+    m_Localized: "Ch\u1EDD"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

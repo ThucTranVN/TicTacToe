@@ -68,3 +68,8 @@ public enum CheckWinDirection
     DiagonalRight,
     DiagonalLeft
 }
+public enum Language
+{
+    English,
+    Vietnamese
+}

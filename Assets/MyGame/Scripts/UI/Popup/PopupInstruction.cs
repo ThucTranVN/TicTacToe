@@ -12,7 +12,7 @@ public class PopupInstruction : BasePopup
     [SerializeField] private RectTransform m_ContentRect;
 
     private void Start()
-    {
+    {   
         m_ContentTxt.text = globalConfig.instructionInfo;
         m_ExitButton.onClick.AddListener(OnClickExitButton);
     }
