@@ -45,4 +45,8 @@ public class GlobalConfig : ScriptableObject
 
     [Header("List Music")]
     public List<AudioClip> soundMusics;
+
+    [Header("Color Alpha")]
+    public Color colorAlphaOn = new(1f, 1f, 1f, 1f);
+    public Color colorAlphaOff = new(1f, 1f, 1f, 0f);
 }

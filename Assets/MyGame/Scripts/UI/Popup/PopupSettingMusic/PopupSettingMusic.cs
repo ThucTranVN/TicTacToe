@@ -1,3 +1,4 @@
+using Sirenix.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,6 @@ public class PopupSettingMusic : BasePopup
 {
     [Header("Attribute")]
     [SerializeField] private AudioClip currentMusicSound;
-    [SerializeField] private GlobalConfig globalConfig;
     [SerializeField] private List<SetupMusic> setupMusics;
 
     [Header("Buttons && Toggles")]
@@ -31,18 +31,23 @@ public class PopupSettingMusic : BasePopup
         if (randomMusicTgl.isOn)
         {
             CheckStateToggleMusic(randomMusicTgl, false);
-            int previousIndex = globalConfig.soundMusics.IndexOf(currentMusicSound);
-            int newIndex;
-            do
+            if(DataManager.HasInstance)
             {
-                newIndex = Random.Range(0, globalConfig.soundMusics.Count);
-            }
-            while (newIndex == previousIndex);
-            currentMusicSound = globalConfig.soundMusics[newIndex];
-            if (AudioManager.HasInstance)
-            {
-                AudioManager.Instance.PlayBGM(currentMusicSound.name);
-            }
+                GlobalConfig globalConfig = DataManager.Instance.GlobalConfig;
+                int previousIndex = globalConfig.soundMusics.IndexOf(currentMusicSound);
+                int newIndex;
+                do
+                {
+                    newIndex = Random.Range(0, globalConfig.soundMusics.Count);
+                }
+                while (newIndex == previousIndex);
+                currentMusicSound = globalConfig.soundMusics[newIndex];
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlayBGM(currentMusicSound.name);
+                }
+            }    
+           
         }
         this.Hide();
     }
@@ -50,8 +55,12 @@ public class PopupSettingMusic : BasePopup
     {
         for (int i = 0; i < setupMusics.Count; i++)
         {
-            setupMusics[i].SetCurrentMusic(globalConfig.soundMusics[i]);
-            setupMusics[i].OnSelected += HandleMusicSelected;
+            if(DataManager.HasInstance)
+            {
+                setupMusics[i].SetCurrentMusic(DataManager.Instance.GlobalConfig.soundMusics[i]);
+                setupMusics[i].OnSelected += HandleMusicSelected;
+            }    
+            
         }
     }
     private void HandleMusicSelected(SetupMusic selectedItem)

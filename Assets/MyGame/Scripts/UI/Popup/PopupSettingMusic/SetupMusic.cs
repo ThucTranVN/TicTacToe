@@ -89,17 +89,22 @@ public class SetupMusic : MonoBehaviour
     {
         return playMusic;
     }
-    private void SetColorAlpha(bool IsAlha)
+    private void SetColorAlpha(bool IsAlpha)
     {
-        if (IsAlha)
+        if (DataManager.HasInstance)
         {
-            BgImg.color = new Color(1, 1, 1, 0f);
-            checkMarkImg.color = new Color(1, 1, 1, 1f);
+            GlobalConfig globalConfig = DataManager.Instance.GlobalConfig;
+            if (IsAlpha)
+            {
+                BgImg.color = globalConfig.colorAlphaOff;
+                checkMarkImg.color = globalConfig.colorAlphaOn;
+            }
+            else
+            {
+                BgImg.color = globalConfig.colorAlphaOn;
+                checkMarkImg.color = globalConfig.colorAlphaOff;
+            }
         }
-        else
-        {
-            BgImg.color = new Color(1, 1, 1, 1f);
-            checkMarkImg.color = new Color(1, 1, 1, 0f);
-        }
+
     }
 }
