@@ -15,10 +15,18 @@ public class PopupSettingGame : BasePopup
     private void Start()
     {
         m_ExitButton.onClick.AddListener(OnClickExitButton);
+        m_MusicButton.onClick.AddListener(OnClickMusicButton);
     }
 
     private void OnClickExitButton()
     {
         this.Hide();
     }
+    private void OnClickMusicButton()
+    {
+        if(UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupSettingMusic>();
+        }    
+    }    
 }

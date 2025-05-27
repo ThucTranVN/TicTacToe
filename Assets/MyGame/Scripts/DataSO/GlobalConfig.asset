@@ -48,3 +48,9 @@ MonoBehaviour:
     a <b><color=#FFA500>draw</color></b>.\\n\\n\n    <b><color=#00FFFF>5. Tips:</color></b>\\n\n   
     \u2022 Block your opponent\u2019s moves.\\n\n    \u2022 Think ahead to set up
     winning combinations.\\n\\n\n    <i><color=#AAAAAA> Enjoy the game!</color></i>\n"
+  soundMusics:
+  - {fileID: 8300000, guid: 0fa0883905a690647b553bd303df6750, type: 3}
+  - {fileID: 8300000, guid: 562b437c4f5a8134aad2a9390b4b4bb0, type: 3}
+  - {fileID: 8300000, guid: e2b0f3c9efe442d4b8242d1041858c34, type: 3}
+  - {fileID: 8300000, guid: 2d702e955380a4943a7e1c4bc71a1a2b, type: 3}
+  - {fileID: 8300000, guid: 592b11e32ad9e794892223ea72c317e4, type: 3}
