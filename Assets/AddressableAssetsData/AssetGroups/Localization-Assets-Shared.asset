@@ -14,12 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Localization-Assets-Shared
   m_GUID: 1c23437fa7a36a247bc97b320abd6256
-  m_SerializeEntries:
-  - m_GUID: 1288d1f80261c134f89af29e41fccce4
-    m_Address: Assets/Localization/Tables/UIStrings Shared Data.asset
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5cbcd4738afcfa84ab3518fddd92fb21, type: 2}
   m_SchemaSet:

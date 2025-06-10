@@ -1,0 +1,21 @@
+Key,EN,VN
+MenuGame_Play,Play,Chơi
+MenuGame_Info,Info,Hướng dẫn
+MenuGame_Menu,Menu,Danh mục
+BoarSelection_Back,BACK,QUAY LẠI
+SettingGame_Menu,MENU,DANH MỤC
+SettingGame_Shop,Shop,Cửa hàng
+SettingGame_Music,Music,Âm thanh
+SettingGame_Language,Language,Ngôn ngữ
+Instruction_Content,"""<size=130%><b><color=#FFD700><sprite index=0 tint=1>How to Play Tic Tac Toe</color></b></size>\n\n<b><color=#00FFFF>1. Game Objective:</color></b>\nBe the first to get <b><color=#00FF00>three marks in a row</color></b> (horizontally, vertically, or diagonally).\n\n<b><color=#00FFFF>2. How to Play:</color></b>\n• The game is played on a <b>3×3 grid</b>.\n• Players take turns placing their mark: <b>X</b> or <b>O</b>.\n• <b>Player 1</b> is <color=#FF69B4>X</color>, <b>Player 2</b> (or AI) is <color=#1E90FF>O</color>.\n• Tap an empty square to place your mark.\n\n<b><color=#00FFFF>3. Winning the Game:</color></b>\nGet three of your marks in a row before your opponent!\n\n<b><color=#00FFFF>4. Game Ends When:</color></b>\n• One player wins, or\n• All squares are filled — it's a <b><color=#FFA500>draw</color></b>.\n\n<b><color=#00FFFF>5. Tips:</color></b>\n• Block your opponent’s moves.\n• Think ahead to set up winning combinations.\n\n<i><color=#AAAAAA>Enjoy the game!</color></i>""
+
+","""<size=130%><b><color=#FFD700><sprite index=0 tint=1>Cách Chơi Cờ Caro</color></b></size>\n\n<b><color=#00FFFF>1. Mục Tiêu Trò Chơi:</color></b>\nHãy là người đầu tiên có được <b><color=#00FF00>ba ký hiệu liên tiếp</color></b> (theo hàng ngang, hàng dọc hoặc đường chéo).\n\n<b><color=#00FFFF>2. Cách Chơi:</color></b>\n• Trò chơi diễn ra trên một <b>bàn cờ 3×3</b>.\n• Người chơi thay phiên nhau đặt ký hiệu: <b>X</b> hoặc <b>O</b>.\n• <b>Người chơi 1</b> là <color=#FF69B4>X</color>, <b>Người chơi 2</b> (hoặc máy) là <color=#1E90FF>O</color>.\n• Nhấn vào ô trống để đặt ký hiệu của bạn.\n\n<b><color=#00FFFF>3. Cách Thắng Trò Chơi:</color></b>\nĐặt được ba ký hiệu liên tiếp trước đối thủ để chiến thắng!\n\n<b><color=#00FFFF>4. Trò Chơi Kết Thúc Khi:</color></b>\n• Một người chơi chiến thắng, hoặc\n• Tất cả các ô đều được lấp đầy — đó là một <b><color=#FFA500>trận hòa</color></b>.\n\n<b><color=#00FFFF>5. Mẹo Chơi:</color></b>\n• Chặn nước đi của đối thủ.\n• Suy nghĩ trước để tạo ra những nước đi chiến thắng.\n\n<i><color=#AAAAAA>Chúc bạn chơi vui vẻ!</color></i>""
+"
+Instruction_Instruction,INSTRUCTION,Hướng dẫn
+SelecLanguage_Language,Language,Ngôn ngữ
+SelecLanguage_English,English,Tiếng anh
+SelecLanguage_Vietnamese,Vietnamese ,Tiếng việt
+GameLoading_Loading,Loading,Chờ
+VersionFormat,	Version {0},	Phiên bản {0}
+WelcomeUser,	Welcome {0},Chào mừng {0}
+ScoreFormat,Score: {0}/{1},Điểm: {0}/{1}

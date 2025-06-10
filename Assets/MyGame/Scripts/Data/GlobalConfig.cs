@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu()]
@@ -50,4 +51,11 @@ public class GlobalConfig : ScriptableObject
     [Header("String Intruction")]
     [TextArea(20,20)]
     public string instructionInfo;
+
+    [Header("Localization Settings")]
+    public List<LocalizationEntry> localizationEntries = new List<LocalizationEntry>();
+
+    [Header("Fonts Per Language")]
+    public TMP_FontAsset englishFont;
+    public TMP_FontAsset vietnameseFont;
 }

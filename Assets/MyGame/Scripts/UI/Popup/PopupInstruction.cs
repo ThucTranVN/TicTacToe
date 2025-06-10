@@ -13,7 +13,7 @@ public class PopupInstruction : BasePopup
 
     private void Start()
     {   
-        m_ContentTxt.text = globalConfig.instructionInfo;
+        //m_ContentTxt.text = globalConfig.instructionInfo;
         m_ExitButton.onClick.AddListener(OnClickExitButton);
     }
     private void OnClickExitButton()
@@ -23,6 +23,8 @@ public class PopupInstruction : BasePopup
     public override void Show(object data)
     {
         base.Show(data);
+
+        m_ContentTxt.GetComponent<LocalizedTextDynamic>()?.UpdateTextManually();
 
         StartCoroutine(ReadSizeNextFrame());
     }

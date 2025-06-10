@@ -14,14 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Localization-String-Tables-Vietnamese (vi)
   m_GUID: 2b94b63fa055e4942ae199ed63d565f4
-  m_SerializeEntries:
-  - m_GUID: 88ef91bd97078544aaf7632e928ace36
-    m_Address: UIStrings_vi
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-vi
-    - Preload
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5cbcd4738afcfa84ab3518fddd92fb21, type: 2}
   m_SchemaSet:

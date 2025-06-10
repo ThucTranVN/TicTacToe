@@ -31,6 +31,10 @@ MonoBehaviour:
   scrollTweenDuration: 0.35
   winLineColor: {r: 0.3274203, g: 1, b: 0.0047169924, a: 1}
   winLineWidth: 0.2
+  winLineSortingLayerName: UI
+  winLineSortingOrder: 10
+  winLineDrawDuration: 0.5
+  winLinePositionCount: 2
   timeFakeLoading: 2
   timeHideCanvasGroup: 1
   timeDoAnimationText: 0.3
@@ -48,3 +52,54 @@ MonoBehaviour:
     a <b><color=#FFA500>draw</color></b>.\\n\\n\n    <b><color=#00FFFF>5. Tips:</color></b>\\n\n   
     \u2022 Block your opponent\u2019s moves.\\n\n    \u2022 Think ahead to set up
     winning combinations.\\n\\n\n    <i><color=#AAAAAA> Enjoy the game!</color></i>\n"
+  localizationEntries:
+  - Key: MenuGame_Play
+    EN: Play
+    VN: "Ch\u01A1i"
+  - Key: MenuGame_Info
+    EN: Info
+    VN: "H\u01B0\u1EDBng d\u1EABn"
+  - Key: MenuGame_Menu
+    EN: Menu
+    VN: "Danh m\u1EE5c"
+  - Key: BoarSelection_Back
+    EN: BACK
+    VN: "QUAY L\u1EA0I"
+  - Key: SettingGame_Menu
+    EN: MENU
+    VN: "DANH M\u1EE4C"
+  - Key: SettingGame_Shop
+    EN: Shop
+    VN: "C\u1EEDa h\xE0ng"
+  - Key: SettingGame_Music
+    EN: Music
+    VN: "\xC2m thanh"
+  - Key: SettingGame_Language
+    EN: Language
+    VN: "Ng\xF4n ng\u1EEF"
+  - Key: Instruction_Instruction
+    EN: INSTRUCTION
+    VN: "H\u01B0\u1EDBng d\u1EABn"
+  - Key: SelecLanguage_Language
+    EN: Language
+    VN: "Ng\xF4n ng\u1EEF"
+  - Key: SelecLanguage_English
+    EN: English
+    VN: "Ti\u1EBFng anh"
+  - Key: SelecLanguage_Vietnamese
+    EN: Vietnamese
+    VN: "Ti\u1EBFng vi\u1EC7t"
+  - Key: GameLoading_Loading
+    EN: Loading
+    VN: "Ch\u1EDD"
+  - Key: VersionFormat
+    EN: Version {0}
+    VN: "Phi\xEAn b\u1EA3n {0}"
+  - Key: WelcomeUser
+    EN: Welcome {0}
+    VN: "Ch\xE0o m\u1EEBng {0}"
+  - Key: ScoreFormat
+    EN: 'Score: {0}/{1}'
+    VN: "\u0110i\u1EC3m: {0}/{1}"
+  englishFont: {fileID: 11400000, guid: ca247a3092b7b404dbaa6f4ab43e450c, type: 2}
+  vietnameseFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -15,13 +15,13 @@ MonoBehaviour:
   m_GroupName: Localization-Locales
   m_GUID: ce0ac3435d4693146a72fc3c9dd49580
   m_SerializeEntries:
-  - m_GUID: 132af1d1c05579841b9a2f7edf8b2ccf
+  - m_GUID: d2aee3c32c2eee949a222289f112e105
     m_Address: English (en)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1aa2e24db35ce70488babf27c5029568
+  - m_GUID: e41e7a94e5fb92a49a71aced832788ce
     m_Address: Vietnamese (vi)
     m_ReadOnly: 1
     m_SerializedLabels:
