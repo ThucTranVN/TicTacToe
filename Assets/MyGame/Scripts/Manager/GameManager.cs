@@ -4,7 +4,10 @@ public class GameManager : BaseManager<GameManager>
 {
     private GameMode currentGameMode = GameMode.Unknown;
 
-    public  GameMode CurrenGameMode => currentGameMode;
+    public GameMode CurrenGameMode => currentGameMode;
+
+    [SerializeField] private AIDifficulty aiDifficulty;
+    public AIDifficulty AiDifficulty => aiDifficulty;
     private void Start()
     {
         if (UIManager.HasInstance)
@@ -48,11 +51,11 @@ public class GameManager : BaseManager<GameManager>
 
     private void OnApplicationQuit()
     {
-        
+
     }
 
     private void OnApplicationPause(bool pause)
     {
-        
+
     }
 }

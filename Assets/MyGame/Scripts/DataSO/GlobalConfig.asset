@@ -31,6 +31,10 @@ MonoBehaviour:
   scrollTweenDuration: 0.35
   winLineColor: {r: 0.3274203, g: 1, b: 0.0047169924, a: 1}
   winLineWidth: 0.2
+  winLineSortingLayerName: UI
+  winLineSortingOrder: 10
+  winLineDrawDuration: 0.5
+  winLinePositionCount: 2
   timeFakeLoading: 2
   timeHideCanvasGroup: 1
   timeDoAnimationText: 0.3
@@ -54,3 +58,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e2b0f3c9efe442d4b8242d1041858c34, type: 3}
   - {fileID: 8300000, guid: 2d702e955380a4943a7e1c4bc71a1a2b, type: 3}
   - {fileID: 8300000, guid: 592b11e32ad9e794892223ea72c317e4, type: 3}
+  colorAlphaOn: {r: 1, g: 1, b: 1, a: 1}
+  colorAlphaOff: {r: 1, g: 1, b: 1, a: 0}
+  amountMove: 4
+  radiusMove: 1
+  maxCandidates: 8
+  nearbyMove: 4

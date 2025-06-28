@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -10,6 +12,7 @@ public class BoardController : BaseManager<BoardController>
     public int borderSize;
 
     private BoardType defaultBoardType;
+    private BoardType currenttBoardType;
     private int width;
     private int height;
     private Tile[,] tiles;
@@ -28,6 +31,9 @@ public class BoardController : BaseManager<BoardController>
     private int maxWinLines => System.Enum.GetValues(typeof(CheckWinDirection)).Length;
     private List<GameObject> winLineObjects = new();
     private int usedWinLineCount = 0;
+    private int maxCandidateMoves = 10;
+
+
 
     private void Start()
     {
@@ -42,6 +48,10 @@ public class BoardController : BaseManager<BoardController>
         if (boardType == BoardType.Unknown)
         {
             boardType = defaultBoardType;
+        }
+        else
+        {
+            currenttBoardType = boardType;
         }
         SetupBoardType(boardType);
         SetupCameraPosition();
@@ -114,6 +124,15 @@ public class BoardController : BaseManager<BoardController>
         }
 
         SwitchPlayer();
+
+        if (GameManager.HasInstance)
+        {
+            if (GameManager.Instance.CurrenGameMode == GameMode.PVE && currentPlayer == Player.PlayerB)
+            {
+                StartCoroutine(DelayedAIMove());
+            }
+        }
+
     }
     private void SwitchPlayer()
     {
@@ -133,7 +152,7 @@ public class BoardController : BaseManager<BoardController>
                     break;
 
                 case GameMode.PVE:
-
+                    currentPlayer = (currentPlayer == Player.PlayerA) ? Player.PlayerB : Player.PlayerA;
                     break;
 
                 case GameMode.Unknown:
@@ -224,7 +243,7 @@ public class BoardController : BaseManager<BoardController>
         return result;
     }
 
-    private bool IsInBounds(int x, int y)
+    public bool IsInBounds(int x, int y)
     {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
@@ -241,7 +260,7 @@ public class BoardController : BaseManager<BoardController>
         };
     }
 
-    private Vector2Int GetDirectionOffset(CheckWinDirection direction)
+    public Vector2Int GetDirectionOffset(CheckWinDirection direction)
     {
         return direction switch
         {
@@ -282,11 +301,11 @@ public class BoardController : BaseManager<BoardController>
         if (DataManager.HasInstance)
         {
             matched.Sort((a, b) =>
-                   {
-                       if (a.xIndex == b.xIndex)
-                           return a.yIndex.CompareTo(b.yIndex);
-                       return a.xIndex.CompareTo(b.xIndex);
-                   });
+            {
+                if (a.xIndex == b.xIndex)
+                    return a.yIndex.CompareTo(b.yIndex);
+                return a.xIndex.CompareTo(b.xIndex);
+            });
 
             Vector3 start = matched[0].transform.position;
             Vector3 end = matched[matched.Count - 1].transform.position;
@@ -308,10 +327,7 @@ public class BoardController : BaseManager<BoardController>
 
             StartCoroutine(AnimateLine(lr, start, end, DataManager.Instance.GlobalConfig.winLineDrawDuration));
         }
-
-
     }
-
 
     private IEnumerator AnimateLine(LineRenderer lr, Vector3 start, Vector3 end, float duration)
     {
@@ -325,7 +341,42 @@ public class BoardController : BaseManager<BoardController>
             lr.SetPosition(1, current);
             yield return null;
         }
-
         lr.SetPosition(1, end);
     }
+    private void AIMove()
+    {
+        // Get WinLength from Width
+        int winLength = GetWinLengthFromBoardSize(width);
+
+        // 1. Init Board
+        BoardState boardState = new(width, height);
+        boardState.LoadFrom(tiles);
+
+
+        if (GameManager.HasInstance)
+        {
+            if(DataManager.HasInstance)
+            {
+                int maxDepth = (int)GameManager.Instance.AiDifficulty; //GameManager.Instance.Difficult;
+                                                                       // 2. Init AI
+                MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig);
+                // 3. Find Move
+                Vector2Int move = ai.FindBestMove(boardState, currenttBoardType);
+                Debug.Log("Số node Minimax đã duyệt: " + ai.NodeCount);
+                // 4. Take that move
+                if (IsInBounds(move.x, move.y) && tiles[move.x, move.y].state == TileState.Unknown)
+                {
+                    OnTileClicked(tiles[move.x, move.y]);
+                }
+            }
+           
+        }
+    }
+
+    private IEnumerator DelayedAIMove()
+    {
+        yield return new WaitForSeconds(0.25f); // Cho có độ trễ nhẹ
+        AIMove();
+    }
+
 }
