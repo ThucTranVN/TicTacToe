@@ -1,8 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BoardController : BaseManager<BoardController>
@@ -16,6 +13,7 @@ public class BoardController : BaseManager<BoardController>
     private int width;
     private int height;
     private Tile[,] tiles;
+   
 
     private const string PREFAB_TILE_PATH = "Prefabs/Tile/TilePrefab";
     private Player currentPlayer = Player.PlayerA;
@@ -31,8 +29,10 @@ public class BoardController : BaseManager<BoardController>
     private int maxWinLines => System.Enum.GetValues(typeof(CheckWinDirection)).Length;
     private List<GameObject> winLineObjects = new();
     private int usedWinLineCount = 0;
-    private int maxCandidateMoves = 10;
 
+    public Tile[,] Tiles => tiles;
+    public int Width => width;
+    public int Height => height;
 
 
     private void Start()
@@ -164,7 +164,7 @@ public class BoardController : BaseManager<BoardController>
 
     }
 
-    private bool IsBoardFull()
+    public bool IsBoardFull()
     {
         foreach (Tile tile in tiles)
         {
@@ -348,20 +348,20 @@ public class BoardController : BaseManager<BoardController>
         // Get WinLength from Width
         int winLength = GetWinLengthFromBoardSize(width);
 
-        // 1. Init Board
-        BoardState boardState = new(width, height);
-        boardState.LoadFrom(tiles);
-
+        //// 1. Init Board
+        //BoardState boardState = new(width, height);
+        //boardState.LoadFrom(tiles);
 
         if (GameManager.HasInstance)
         {
-            if(DataManager.HasInstance)
+            if (DataManager.HasInstance)
             {
                 int maxDepth = (int)GameManager.Instance.AiDifficulty; //GameManager.Instance.Difficult;
                                                                        // 2. Init AI
-                MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig);
-                // 3. Find Move
-                Vector2Int move = ai.FindBestMove(boardState, currenttBoardType);
+                MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig,this);
+                ai.LoadFrom(tiles,width,height);
+                //3.Find Move
+               Vector2Int move = ai.FindBestMove(currenttBoardType);
                 Debug.Log("Số node Minimax đã duyệt: " + ai.NodeCount);
                 // 4. Take that move
                 if (IsInBounds(move.x, move.y) && tiles[move.x, move.y].state == TileState.Unknown)
@@ -369,7 +369,6 @@ public class BoardController : BaseManager<BoardController>
                     OnTileClicked(tiles[move.x, move.y]);
                 }
             }
-           
         }
     }
 
@@ -378,5 +377,16 @@ public class BoardController : BaseManager<BoardController>
         yield return new WaitForSeconds(0.25f); // Cho có độ trễ nhẹ
         AIMove();
     }
+
+    public List<Vector2Int> ListDirection()
+    {
+        List<Vector2Int> listDir = new()
+        {
+           Horizontal, Vertical, DiagonalLeft, DiagonalRight,
+        };
+        return listDir;
+    }
+
+
 
 }

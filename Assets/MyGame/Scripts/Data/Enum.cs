@@ -70,11 +70,10 @@ public enum CheckWinDirection
     DiagonalRight,
     DiagonalLeft
 }
-public enum AIDifficulty
+public enum AIDepthLevel
 {
-    None = 0,
-    Ease =1,
-    Difficult=3,
+    Unknown = 0,
+    Easy =1,
+    Medium=3,
     Hard=5,
-    Impossiable=7,
 }

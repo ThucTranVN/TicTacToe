@@ -2,27 +2,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
 using System.Linq;
+using Random = UnityEngine.Random;
 
 public class MinimaxAI
 {
     private TileState aiPlayer;
     private TileState opponent;
+    private TileState[,] board;
     private int maxDepth;
     private int winLength;
     private GlobalConfig globalConfig;
     private int nodeCount = 0;
+    private List<Vector2Int> moveHistory = new();
+    private BoardController boardController;
     public int NodeCount => nodeCount;
+    public TileState[,] Board => board;
 
-    public MinimaxAI(TileState aiPlayer, int maxDepth, int winLength, GlobalConfig globalConfig)
+    public MinimaxAI(TileState aiPlayer, int maxDepth, int winLength, GlobalConfig globalConfig, BoardController boardController)
     {
         this.aiPlayer = aiPlayer;
         this.opponent = aiPlayer == TileState.X ? TileState.O : TileState.X;
         this.maxDepth = maxDepth;
         this.winLength = winLength;
         this.globalConfig = globalConfig;
+        this.boardController = boardController;
+       
     }
 
-    public Vector2Int FindBestMove(BoardState board, BoardType boardType)
+    public Vector2Int FindBestMove(BoardType boardType)
     {
         nodeCount = 0;
         Stopwatch stopwatch = new();
@@ -31,16 +38,16 @@ public class MinimaxAI
         if (DataManager.HasInstance)
             globalConfig = DataManager.Instance.GlobalConfig;
 
-        var availableMoves = board.GetAvailableMoves();
-        int width = board.GetBoard().GetLength(0);
-        int height = board.GetBoard().GetLength(1);
+        var availableMoves = GetAvailableMoves();
+        int width = board.GetLength(0);
+        int height = board.GetLength(1);
 
         // 1. Ngay lập tức kiểm tra nước thắng của AI
         foreach (var move in availableMoves)
         {
-            board.MakeMove(move.x, move.y, aiPlayer);
-            bool isWin = board.CheckWinner(winLength) == aiPlayer;
-            board.UndoMove(move.x, move.y);
+            MakeMove(move.x, move.y, aiPlayer);
+            bool isWin = CheckWinner(width,height) == aiPlayer;
+            UndoMove(move.x, move.y);
             if (isWin)
             {
                 stopwatch.Stop();
@@ -50,7 +57,7 @@ public class MinimaxAI
         }
 
         // 2. Kiểm tra threat của đối thủ để chặn
-        var threats = GetBlockingMoves(board, opponent, winLength);
+        var threats = GetBlockingMoves(opponent, winLength);
         if (threats.Count > 0)
         {
             var blockMove = threats.OrderBy(m => GetDistanceToCenter(m.x, m.y, width, height)).First();
@@ -60,7 +67,7 @@ public class MinimaxAI
         }
 
         // 3. Nếu lượt đầu (không phải 3x3) → chọn gần trung tâm
-        if (boardType != BoardType.Size3x3 && availableMoves.Count >= board.GetBoard().Length - globalConfig.amountMove)
+        if (boardType != BoardType.Size3x3 && availableMoves.Count >= board.Length - globalConfig.amountMove)
         {
             int centerX = width / 2;
             int centerY = height / 2;
@@ -74,7 +81,7 @@ public class MinimaxAI
             };
             foreach (var move in goodStarts)
             {
-                if (board.IsInBounds(move.x, move.y) && board.GetBoard()[move.x, move.y] == TileState.Unknown)
+                if (boardController.IsInBounds(move.x, move.y) && board[move.x, move.y] == TileState.Unknown)
                 {
                     stopwatch.Stop();
                     UnityEngine.Debug.Log($"⏱️ Time: {stopwatch.ElapsedMilliseconds} ms | Nodes: {nodeCount} (First Move)");
@@ -88,13 +95,13 @@ public class MinimaxAI
         // 4. Minimax với alpha-beta
         int bestScore = int.MinValue;
         Vector2Int bestMove = new Vector2Int(-1, -1);
-        var moves = GetCandidateMoves(board, globalConfig.radiusMove, globalConfig.maxCandidates);
+        var moves = GetCandidateMoves(globalConfig.radiusMove, globalConfig.maxCandidates);
 
         foreach (var move in moves)
         {
-            board.MakeMove(move.x, move.y, aiPlayer);
-            int score = Minimax(board, 0, false, int.MinValue, int.MaxValue);
-            board.UndoMove(move.x, move.y);
+            MakeMove(move.x, move.y, aiPlayer);
+            int score = Minimax(0, false, int.MinValue, int.MaxValue);
+            UndoMove(move.x, move.y);
 
             if (score > bestScore)
             {
@@ -108,26 +115,28 @@ public class MinimaxAI
         return bestMove;
     }
 
-    private int Minimax(BoardState board, int depth, bool isMaximizing, int alpha, int beta)
+    private int Minimax( int depth, bool isMaximizing, int alpha, int beta)
     {
         nodeCount++;
-        TileState winner = board.CheckWinner(winLength);
-        if (depth >= maxDepth || winner != TileState.Unknown || board.IsFull())
+        int widht = boardController.Width;
+        int height = boardController.Height;
+        TileState winner = CheckWinner(widht, height);
+        if (depth >= maxDepth || winner != TileState.Unknown || boardController.IsBoardFull())
         {
             if (winner == aiPlayer) return 100000 - depth;
             if (winner == opponent) return depth - 100000;
-            return EvaluateBoard(board);
+            return EvaluateBoard();
         }
 
-        var moves = GetCandidateMoves(board, globalConfig.radiusMove, globalConfig.maxCandidates);
+        var moves = GetCandidateMoves( globalConfig.radiusMove, globalConfig.maxCandidates);
         if (isMaximizing)
         {
             int maxEval = int.MinValue;
             foreach (var move in moves)
             {
-                board.MakeMove(move.x, move.y, aiPlayer);
-                int eval = Minimax(board, depth + 1, false, alpha, beta);
-                board.UndoMove(move.x, move.y);
+                MakeMove(move.x, move.y, aiPlayer);
+                int eval = Minimax( depth + 1, false, alpha, beta);
+                UndoMove(move.x, move.y);
                 maxEval = Mathf.Max(maxEval, eval);
                 alpha = Mathf.Max(alpha, eval);
                 if (beta <= alpha) break;
@@ -139,9 +148,9 @@ public class MinimaxAI
             int minEval = int.MaxValue;
             foreach (var move in moves)
             {
-                board.MakeMove(move.x, move.y, opponent);
-                int eval = Minimax(board, depth + 1, true, alpha, beta);
-                board.UndoMove(move.x, move.y);
+                MakeMove(move.x, move.y, opponent);
+                int eval = Minimax( depth + 1, true, alpha, beta);
+                UndoMove(move.x, move.y);
                 minEval = Mathf.Min(minEval, eval);
                 beta = Mathf.Min(beta, eval);
                 if (beta <= alpha) break;
@@ -150,16 +159,16 @@ public class MinimaxAI
         }
     }
 
-    private int EvaluateBoard(BoardState board)
+    private int EvaluateBoard()
     {
-        return EvaluateForPlayer(board, aiPlayer) - EvaluateForPlayer(board, opponent);
+        return EvaluateForPlayer( aiPlayer) - EvaluateForPlayer( opponent);
     }
 
-    private int EvaluateForPlayer(BoardState board, TileState player)
+    private int EvaluateForPlayer( TileState player)
     {
         int score = 0;
-        int width = board.GetBoard().GetLength(0);
-        int height = board.GetBoard().GetLength(1);
+        int width = board.GetLength(0);
+        int height = board.GetLength(1);
 
         Vector2Int[] directions = ArrayDirection();
 
@@ -175,9 +184,9 @@ public class MinimaxAI
                     {
                         int nx = x + dir.x * i;
                         int ny = y + dir.y * i;
-                        if (!board.IsInBounds(nx, ny)) break;
+                        if (!boardController.IsInBounds(nx, ny)) break;
 
-                        TileState s = board.GetBoard()[nx, ny];
+                        TileState s = board[nx, ny];
                         if (s == player) count++;
                         else if (s == TileState.Unknown) blanks++;
                         else { count = -1; break; }
@@ -206,31 +215,31 @@ public class MinimaxAI
     }
 
 
-    private List<Vector2Int> GetCandidateMoves(BoardState board, int radius, int maxCandidates)
+    private List<Vector2Int> GetCandidateMoves( int radius, int maxCandidates)
     {
         HashSet<Vector2Int> candidates = new();
-        int width = board.GetBoard().GetLength(0);
-        int height = board.GetBoard().GetLength(1);
+        int width = board.GetLength(0);
+        int height = board.GetLength(1);
 
         // Thêm blocking moves ngay đầu
-        var blockers = GetBlockingMoves(board, opponent, winLength);
+        var blockers = GetBlockingMoves( opponent, winLength);
         foreach (var b in blockers)
             candidates.Add(b);
 
         // Lấy quanh các nước recent
-        var focusPoints = board.GetRecentMoves(globalConfig.nearbyMove);
+        var focusPoints = GetRecentMoves(globalConfig.nearbyMove);
         foreach (var pt in focusPoints)
             for (int dx = -radius; dx <= radius; dx++)
                 for (int dy = -radius; dy <= radius; dy++)
                 {
                     int nx = pt.x + dx;
                     int ny = pt.y + dy;
-                    if ((dx != 0 || dy != 0) && board.IsInBounds(nx, ny) && board.GetBoard()[nx, ny] == TileState.Unknown)
+                    if ((dx != 0 || dy != 0) && boardController.IsInBounds(nx, ny) && board[nx, ny] == TileState.Unknown)
                         candidates.Add(new Vector2Int(nx, ny));
                 }
 
         if (candidates.Count == 0)
-            candidates.UnionWith(board.GetAvailableMoves());
+            candidates.UnionWith(GetAvailableMoves());
 
         return candidates
             .OrderBy(m => GetDistanceToCenter(m.x, m.y, width, height))
@@ -238,38 +247,44 @@ public class MinimaxAI
             .ToList();
     }
 
-    private List<Vector2Int> GetBlockingMoves(BoardState board, TileState threatPlayer, int winLength)
+    private List<Vector2Int> GetBlockingMoves(TileState threatPlayer, int winLength)
     {
         List<Vector2Int> blockers = new();
-        foreach (var move in board.GetAvailableMoves())
+        foreach (var move in GetAvailableMoves())
         {
-            board.MakeMove(move.x, move.y, threatPlayer);
-            int maxLen = GetMaxConnectedLength(board, move, threatPlayer);
-            board.UndoMove(move.x, move.y);
+            MakeMove(move.x, move.y, threatPlayer);
+            int maxLen = GetMaxConnectedLength( move, threatPlayer);
+            UndoMove(move.x, move.y);
             if (maxLen >= winLength - 1)
                 blockers.Add(move);
         }
         return blockers;
     }
 
-    private int GetMaxConnectedLength(BoardState board, Vector2Int pos, TileState player)
+    private int GetMaxConnectedLength(Vector2Int pos, TileState player)
     {
         int maxLength = 1;
         Vector2Int[] directions = ArrayDirection();
-
+        
 
         foreach (var dir in directions)
         {
             int count = 1;
-            int x = pos.x + dir.x, y = pos.y + dir.y;
-            while (board.IsInBounds(x, y) && board.GetBoard()[x, y] == player)
+            int x = pos.x + dir.x;
+            int y = pos.y + dir.y;
+            while (boardController.IsInBounds(x, y) && board[x, y] == player)
             {
-                count++; x += dir.x; y += dir.y;
+                count++; 
+                x += dir.x; 
+                y += dir.y;
             }
-            x = pos.x - dir.x; y = pos.y - dir.y;
-            while (board.IsInBounds(x, y) && board.GetBoard()[x, y] == player)
+            x = pos.x - dir.x; 
+            y = pos.y - dir.y;
+            while (boardController.IsInBounds(x, y) && board[x, y] == player)
             {
-                count++; x -= dir.x; y -= dir.y;
+                count++; 
+                x -= dir.x; 
+                y -= dir.y;
             }
             maxLength = Mathf.Max(maxLength, count);
         }
@@ -283,5 +298,86 @@ public class MinimaxAI
             new(1, 0), new(0, 1),
             new(1, 1), new(1, -1),
         };
+    }
+
+    public List<Vector2Int> GetAvailableMoves()
+    {
+        List<Vector2Int> moves = new();
+        if (BoardController.HasInstance)
+        {
+            int width = BoardController.Instance.Width;
+            int height = BoardController.Instance.Height;   
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Tile[,] tile = BoardController.Instance.Tiles;
+                    if (tile != null && tile[x, y].state == TileState.Unknown)
+                    {
+                        moves.Add(new Vector2Int(x, y));
+                    }
+                }
+            }
+        }
+        return moves;
+    }
+    public void LoadFrom(Tile[,] tiles, int width, int height)
+    {
+        board = new TileState[width, height];
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                board[x, y] = tiles[x, y].state;
+    }
+
+    public void MakeMove(int x, int y, TileState player)
+    {
+        board[x, y] = player;
+        moveHistory.Add(new Vector2Int(x, y));
+    }
+    public void UndoMove(int x, int y)
+    {
+        board[x, y] = TileState.Unknown;
+        if (moveHistory.Count > 0 && moveHistory[^1].x == x && moveHistory[^1].y == y) // ^1 => Get last element index
+            moveHistory.RemoveAt(moveHistory.Count - 1);
+    }
+    public List<Vector2Int> GetRecentMoves(int count)
+    {
+        int take = Mathf.Min(count, moveHistory.Count);
+        return moveHistory.GetRange(moveHistory.Count - take, take);
+    }
+    public TileState CheckWinner( int width, int height)
+    {
+
+        List<Vector2Int> directions = new();
+        if (BoardController.HasInstance)
+        {
+            directions = BoardController.Instance.ListDirection();
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    TileState current = board[x, y];
+                    if (current == TileState.Unknown)
+                        continue;
+
+                    foreach (var dir in directions)
+                    {
+                        int count = 1;
+                        int nx = x + dir.x, ny = y + dir.y;
+
+                        while (BoardController.Instance.IsInBounds(nx, ny) && board[nx, ny] == current)
+                        {
+                            count++;
+                            if (count >= winLength)
+                                return current;
+
+                            nx += dir.x;
+                            ny += dir.y;
+                        }
+                    }
+                }
+            }
+        }
+        return TileState.Unknown;
     }
 }

@@ -6,8 +6,8 @@ public class GameManager : BaseManager<GameManager>
 
     public GameMode CurrenGameMode => currentGameMode;
 
-    [SerializeField] private AIDifficulty aiDifficulty;
-    public AIDifficulty AiDifficulty => aiDifficulty;
+    [SerializeField] private AIDepthLevel aiDifficulty;
+    public AIDepthLevel AiDifficulty => aiDifficulty;
     private void Start()
     {
         if (UIManager.HasInstance)
