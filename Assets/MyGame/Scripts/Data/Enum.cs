@@ -1,3 +1,5 @@
+using UnityEngine.InputSystem.iOS;
+
 public enum ListenType
 {
     ANY = 0,
@@ -67,4 +69,11 @@ public enum CheckWinDirection
     Vertical,
     DiagonalRight,
     DiagonalLeft
+}
+public enum AIDepthLevel
+{
+    Unknown = 0,
+    Easy =1,
+    Medium=3,
+    Hard=5,
 }

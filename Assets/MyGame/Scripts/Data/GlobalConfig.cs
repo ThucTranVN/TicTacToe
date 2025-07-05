@@ -57,4 +57,11 @@ public class GlobalConfig : ScriptableObject
     [Header("Color Alpha")]
     public Color colorAlphaOn = new(1f, 1f, 1f, 1f);
     public Color colorAlphaOff = new(1f, 1f, 1f, 0f);
+
+    [Header("MinimaxAi Setting")]
+    [Tooltip("Amount of turn that player and AI click at start game")]
+    public int amountMove;
+    public int radiusMove;
+    public int maxCandidates;
+    public int nearbyMove;
 }
