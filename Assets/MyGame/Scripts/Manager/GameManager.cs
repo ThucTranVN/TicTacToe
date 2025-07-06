@@ -33,7 +33,7 @@ public class GameManager : BaseManager<GameManager>
                 {
                     if(UIManager.HasInstance)
                     {
-                        UIManager.Instance.ShowPopup<PopupSelectDifficultAI>();
+                        UIManager.Instance.ShowScreen<ScreenSelectDifficultAI>();
                     }
                 } 
                 break;

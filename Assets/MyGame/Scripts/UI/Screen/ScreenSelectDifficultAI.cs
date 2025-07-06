@@ -4,7 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class PopupSelectDifficultAI : BasePopup
+public class ScreenSelectDifficultAI : BaseScreen
 {
     [SerializeField] private Vector2 offSet;
     [SerializeField] private TMP_Dropdown difficultDropdown;
@@ -34,8 +34,7 @@ public class PopupSelectDifficultAI : BasePopup
     }    
     private void SetOffSet()
     {
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        if(rectTransform != null)
+        if(TryGetComponent<RectTransform>(out var rectTransform))
         {
             rectTransform.anchoredPosition = offSet;
         } 
@@ -44,7 +43,7 @@ public class PopupSelectDifficultAI : BasePopup
     private void OnClickSelectDifficule(int index)
     {
         AIDepthLevel selected = depthOptions[index];
-        Debug.Log($"?� ch?n: {selected} - Gi� tr?: {(int)selected}");
+        Debug.Log($"Đã chọn: {selected} - Giá trị : {(int)selected}");
         if (GameManager.HasInstance)
         {
             GameManager.Instance.SetAIDepthLevel(selected);
