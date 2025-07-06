@@ -1006,9 +1006,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1702442163662525575}
-  - component: {fileID: 812482651841660608}
+  - component: {fileID: 1476555769791374720}
   m_Layer: 0
-  m_Name: PopupSelectDifficultAI
+  m_Name: ScreenSelectDifficultAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1032,10 +1032,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: -81}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &812482651841660608
+--- !u!114 &1476555769791374720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1044,11 +1044,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6745607055379865525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31354c7e36d6b9747a0b067b084918cd, type: 3}
+  m_Script: {fileID: 11500000, guid: a83e91207384fee4883d229f92bcca2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rtWrapper: {fileID: 0}
-  offSet: {x: 0, y: -100}
+  offSet: {x: 0, y: 800}
   difficultDropdown: {fileID: 5715236562148712965}
 --- !u!1 &6768955627448301223
 GameObject:
