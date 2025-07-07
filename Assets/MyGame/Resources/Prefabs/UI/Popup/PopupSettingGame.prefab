@@ -424,6 +424,7 @@ MonoBehaviour:
   m_BgmToggle: {fileID: 391986301105636587}
   m_SfxToggle: {fileID: 7665243859237240711}
   m_VibrationToggle: {fileID: 1171239708554066329}
+  m_TitleText: {fileID: 1580337598074243082}
 --- !u!1 &1487493923711527983
 GameObject:
   m_ObjectHideFlags: 0

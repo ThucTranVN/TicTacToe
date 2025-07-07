@@ -27,17 +27,19 @@ public class GameManager : BaseManager<GameManager>
         {
             BoardController.Instance.InitBoard(boardType);
         }
-        switch(gameMode)
+        switch (gameMode)
         {
             case GameMode.PVE:
                 {
-                    if(UIManager.HasInstance)
+                    if (UIManager.HasInstance)
                     {
-                        UIManager.Instance.ShowScreen<ScreenSelectDifficultAI>();
+                        UIManager.Instance.ShowScreen<ScreenGame>();
                     }
-                } 
+                }
                 break;
-        }    
+        }
+
+
     }
 
     public void RestartGame()
