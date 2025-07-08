@@ -2069,10 +2069,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rtWrapper: {fileID: 0}
   difficultDropdown: {fileID: 1456829205751249717}
+  cvgdifficultDropdown: {fileID: 6202324383619680961}
   backBtn: {fileID: 2046987407401486357}
-  undoBtn: {fileID: 3081194800664124747}
-  hintBtn: {fileID: 255298636995117614}
   settingBtn: {fileID: 709640412011582196}
+  hintBtn: {fileID: 255298636995117614}
+  undoBtn: {fileID: 3081194800664124747}
 --- !u!1 &5059419405296855383
 GameObject:
   m_ObjectHideFlags: 0

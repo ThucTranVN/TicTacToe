@@ -8,11 +8,12 @@ using UnityEngine.UI;
 public class ScreenGame : BaseScreen
 {
     [SerializeField] private TMP_Dropdown difficultDropdown;
+    [SerializeField] private CanvasGroup cvgdifficultDropdown;
     [SerializeField] private Button backBtn;
-    [SerializeField] private Button undoBtn;
-    [SerializeField] private Button hintBtn;
     [SerializeField] private Button settingBtn;
-
+    [SerializeField] private Button hintBtn;
+    [SerializeField] private Button undoBtn;
+    
     private List<AIDepthLevel> depthOptions;
 
     private void Start()
@@ -22,7 +23,7 @@ public class ScreenGame : BaseScreen
     public override void Show(object data)
     {
         base.Show(data);
-        if (data != null)
+        if(data !=null)
         {
             if (data is GameMode gameMode)
             {
@@ -31,40 +32,40 @@ public class ScreenGame : BaseScreen
                 {
                     case GameMode.PVP:
                         {
-                            if (canvasGroup != null)
-                            {
-                                canvasGroup.alpha = 0f; // Hide groupdown when in PVP mode
-                                canvasGroup.interactable = false;
-                            }
+                            ShowUIDifficult(false); // Hide dropdown when in PVP mode
                         }
                         break;
                     case GameMode.PVE:
                         {
                             InitDropdown();
-                            if (canvasGroup != null)
-                            {
-                                canvasGroup.alpha = 1f; // Show dropdown when in PVE mode
-                                canvasGroup.interactable = true;
-                            }
+                            ShowUIDifficult(true); // Show dropdown when in PVE mode
                         }
                         break;
                 }
             }
         }
-
-
+      
+      
 
     }
     public override void Init()
     {
         base.Init();
     }
+    private void ShowUIDifficult(bool isShow)
+    {
+        if (cvgdifficultDropdown != null)
+        {
+            cvgdifficultDropdown.alpha = isShow ? 1f : 0f;
+            cvgdifficultDropdown.interactable = isShow;
+            cvgdifficultDropdown.blocksRaycasts = isShow;
+        }
+    }
     private void InitButton()
     {
         backBtn.onClick.AddListener(OnClickBackButton);
         settingBtn.onClick.AddListener(OnClickSettingButton);
         undoBtn.onClick.AddListener(OnClickUndoButton);
-
     }
 
     private void InitDropdown()
@@ -97,10 +98,10 @@ public class ScreenGame : BaseScreen
         {
             UIManager.Instance.ShowScreen<ScreenBoardSelection>();
         }
-        if (BoardController.HasInstance)
+        if(BoardController.HasInstance)
         {
             BoardController.Instance.ResetBoard(); // Reset board state if needed
-        }
+        }    
         this.Hide();
     }
     private void OnClickSettingButton()
