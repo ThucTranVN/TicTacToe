@@ -27,19 +27,7 @@ public class GameManager : BaseManager<GameManager>
         {
             BoardController.Instance.InitBoard(boardType);
         }
-        switch (gameMode)
-        {
-            case GameMode.PVE:
-                {
-                    if (UIManager.HasInstance)
-                    {
-                        UIManager.Instance.ShowScreen<ScreenGame>();
-                    }
-                }
-                break;
-        }
-
-
+        
     }
 
     public void RestartGame()

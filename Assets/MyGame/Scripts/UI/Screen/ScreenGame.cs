@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -11,13 +10,49 @@ public class ScreenGame : BaseScreen
     [SerializeField] private TMP_Dropdown difficultDropdown;
     [SerializeField] private Button backBtn;
     [SerializeField] private Button settingBtn;
+    
     private List<AIDepthLevel> depthOptions;
 
     private void Start()
     {
-        InitDropdown();
         backBtn.onClick.AddListener(OnClickBackButton);
         settingBtn.onClick.AddListener(OnClickSettingButton);
+    }
+    public override void Show(object data)
+    {
+        base.Show(data);
+        if(data !=null)
+        {
+            if (data is GameMode gameMode)
+            {
+                CanvasGroup canvasGroup = difficultDropdown.GetComponentInParent<CanvasGroup>();
+                switch (gameMode)
+                {
+                    case GameMode.PVP:
+                        {
+                            if(canvasGroup != null)
+                            {
+                                canvasGroup.alpha = 0f; // Hide groupdown when in PVP mode
+                                canvasGroup.interactable = false;
+                            }
+                        }
+                        break;
+                    case GameMode.PVE:
+                        {
+                            InitDropdown();
+                            if (canvasGroup != null)
+                            {
+                                canvasGroup.alpha = 1f; // Show dropdown when in PVE mode
+                                canvasGroup.interactable = true;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+      
+      
+
     }
     public override void Init()
     {
