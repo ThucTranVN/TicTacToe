@@ -9,19 +9,20 @@ public class ScreenGame : BaseScreen
 {
     [SerializeField] private TMP_Dropdown difficultDropdown;
     [SerializeField] private Button backBtn;
+    [SerializeField] private Button undoBtn;
+    [SerializeField] private Button hintBtn;
     [SerializeField] private Button settingBtn;
-    
+
     private List<AIDepthLevel> depthOptions;
 
     private void Start()
     {
-        backBtn.onClick.AddListener(OnClickBackButton);
-        settingBtn.onClick.AddListener(OnClickSettingButton);
+        InitButton();
     }
     public override void Show(object data)
     {
         base.Show(data);
-        if(data !=null)
+        if (data != null)
         {
             if (data is GameMode gameMode)
             {
@@ -30,7 +31,7 @@ public class ScreenGame : BaseScreen
                 {
                     case GameMode.PVP:
                         {
-                            if(canvasGroup != null)
+                            if (canvasGroup != null)
                             {
                                 canvasGroup.alpha = 0f; // Hide groupdown when in PVP mode
                                 canvasGroup.interactable = false;
@@ -50,13 +51,20 @@ public class ScreenGame : BaseScreen
                 }
             }
         }
-      
-      
+
+
 
     }
     public override void Init()
     {
         base.Init();
+    }
+    private void InitButton()
+    {
+        backBtn.onClick.AddListener(OnClickBackButton);
+        settingBtn.onClick.AddListener(OnClickSettingButton);
+        undoBtn.onClick.AddListener(OnClickUndoButton);
+
     }
 
     private void InitDropdown()
@@ -89,10 +97,10 @@ public class ScreenGame : BaseScreen
         {
             UIManager.Instance.ShowScreen<ScreenBoardSelection>();
         }
-        if(BoardController.HasInstance)
+        if (BoardController.HasInstance)
         {
             BoardController.Instance.ResetBoard(); // Reset board state if needed
-        }    
+        }
         this.Hide();
     }
     private void OnClickSettingButton()
@@ -103,5 +111,12 @@ public class ScreenGame : BaseScreen
             UIManager.Instance.ShowPopup<PopupSettingGame>(title);
         }
 
+    }
+    private void OnClickUndoButton()
+    {
+        if (BoardController.HasInstance)
+        {
+            BoardController.Instance.UndoMove();
+        }
     }
 }

@@ -13,7 +13,7 @@ public class BoardController : BaseManager<BoardController>
     private int width;
     private int height;
     private Tile[,] tiles;
-   
+
 
     private const string PREFAB_TILE_PATH = "Prefabs/Tile/TilePrefab";
     private Player currentPlayer = Player.PlayerA;
@@ -28,6 +28,7 @@ public class BoardController : BaseManager<BoardController>
 
     private int maxWinLines => System.Enum.GetValues(typeof(CheckWinDirection)).Length;
     private List<GameObject> winLineObjects = new();
+    private CommandInvoker commandInvoker = new();
     private int usedWinLineCount = 0;
 
     public Tile[,] Tiles => tiles;
@@ -105,7 +106,9 @@ public class BoardController : BaseManager<BoardController>
             return;
 
         TileState playerState = currentPlayer == Player.PlayerA ? TileState.O : TileState.X;
-        tile.SetState(playerState);
+        // Command pattern to handle tile state change
+        commandInvoker.ExecuteCommand(tile, playerState);
+        //tile.SetState(playerState);
 
         int winCount = CheckWin(tile, playerState);
 
@@ -134,6 +137,33 @@ public class BoardController : BaseManager<BoardController>
         }
 
     }
+    public void UndoMove()
+    {
+        GameMode gameMode = GameManager.HasInstance ? GameManager.Instance.CurrenGameMode : GameMode.Unknown;
+        switch(gameMode)
+        {
+            case GameMode.PVP:
+                {
+                    if (isGameOver) return;
+                    commandInvoker.UndoLastCommand();
+                    SwitchPlayer();
+                }
+                break;
+            case GameMode.PVE:
+                {
+                    if (isGameOver) return;
+
+                    commandInvoker.UndoLastCommand();
+                    commandInvoker.UndoLastCommand();
+                    if (GameManager.HasInstance && GameManager.Instance.CurrenGameMode == GameMode.PVE && currentPlayer == Player.PlayerB)
+                    {
+                        StartCoroutine(DelayedAIMove());
+                    }
+                }
+                break;
+        }
+        
+    }    
     private void SwitchPlayer()
     {
         if (GameManager.HasInstance)
@@ -358,10 +388,10 @@ public class BoardController : BaseManager<BoardController>
             {
                 int maxDepth = (int)GameManager.Instance.AIDepthLevel; //GameManager.Instance.Difficult;
                                                                        // 2. Init AI
-                MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig,this);
-                ai.LoadFrom(tiles,width,height);
+                MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig, this);
+                ai.LoadFrom(tiles, width, height);
                 //3.Find Move
-               Vector2Int move = ai.FindBestMove(currenttBoardType);
+                Vector2Int move = ai.FindBestMove(currenttBoardType);
                 Debug.Log("Số node Minimax đã duyệt: " + ai.NodeCount);
                 // 4. Take that move
                 if (IsInBounds(move.x, move.y) && tiles[move.x, move.y].state == TileState.Unknown)
@@ -386,6 +416,19 @@ public class BoardController : BaseManager<BoardController>
         };
         return listDir;
     }
+
+
+    public void ResetBoard()
+    {
+        for (int x = 0; x < tiles.GetLength(0); x++)
+        {
+            for(int y = 0; y < tiles.GetLength(1); y++)
+            {
+                Destroy(tiles[x, y].gameObject);
+            }
+        }
+    }    
+
 
 
 
