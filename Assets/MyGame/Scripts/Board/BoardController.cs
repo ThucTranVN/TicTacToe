@@ -356,7 +356,7 @@ public class BoardController : BaseManager<BoardController>
         {
             if (DataManager.HasInstance)
             {
-                int maxDepth = (int)GameManager.Instance.AiDifficulty; //GameManager.Instance.Difficult;
+                int maxDepth = (int)GameManager.Instance.AIDepthLevel; //GameManager.Instance.Difficult;
                                                                        // 2. Init AI
                 MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig,this);
                 ai.LoadFrom(tiles,width,height);

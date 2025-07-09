@@ -164,6 +164,10 @@ public class ScreenBoardSelection : BaseScreen
         {
             GameManager.Instance.StartGame(mode, currentBoardType);
         }
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowScreen<ScreenGame>(mode,true);
+        }
     }
     private void OnClickBackButton()
     {

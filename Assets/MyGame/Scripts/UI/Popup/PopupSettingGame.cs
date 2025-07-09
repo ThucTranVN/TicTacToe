@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,10 +13,25 @@ public class PopupSettingGame : BasePopup
     [SerializeField] private Toggle m_SfxToggle;
     [SerializeField] private Toggle m_VibrationToggle;
 
+    [Header("Text List")]
+    [SerializeField] private TextMeshProUGUI m_TitleText;
+
     private void Start()
     {
         m_ExitButton.onClick.AddListener(OnClickExitButton);
         m_MusicButton.onClick.AddListener(OnClickMusicButton);
+    }
+    public override void Show(object data)
+    {
+        base.Show(data);
+        if(data !=null)
+        {
+            if (data is string title)
+            {
+                m_TitleText.text = title;
+            }
+        } 
+            
     }
 
     private void OnClickExitButton()

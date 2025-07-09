@@ -6,15 +6,15 @@ public class GameManager : BaseManager<GameManager>
 
     public GameMode CurrenGameMode => currentGameMode;
 
-    [SerializeField] private AIDepthLevel aiDifficulty;
-    public AIDepthLevel AiDifficulty => aiDifficulty;
+    [SerializeField] private AIDepthLevel aIDepthLevel;
+    public AIDepthLevel AIDepthLevel => aIDepthLevel;
     private void Start()
     {
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowNotify<NotifyGameLoading>();
-
         }
+        aIDepthLevel = AIDepthLevel.Easy;
     }
 
     public void StartGame(GameMode gameMode, BoardType boardType)
@@ -27,6 +27,7 @@ public class GameManager : BaseManager<GameManager>
         {
             BoardController.Instance.InitBoard(boardType);
         }
+        
     }
 
     public void RestartGame()
@@ -57,5 +58,9 @@ public class GameManager : BaseManager<GameManager>
     private void OnApplicationPause(bool pause)
     {
 
+    }
+    public void SetAIDepthLevel(AIDepthLevel aIDepthLevel)
+    {
+        this.aIDepthLevel = aIDepthLevel;
     }
 }
