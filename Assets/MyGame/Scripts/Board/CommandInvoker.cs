@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 
 public class CommandInvoker
 {
     private readonly Stack<Tile> commandHistory = new();
+    public Action OnComplete;
 
     public void ExecuteCommand(Tile tile, TileState newState)
     {
@@ -23,5 +25,11 @@ public class CommandInvoker
             Tile lastTile = commandHistory.Pop();
             lastTile.SetState(TileState.Unknown); // Reset the tile state to Unknown
         }
+    }
+    public void UndoLastTwoMoves()
+    {
+        UndoLastCommand();// Undo AI move
+        UndoLastCommand();// Undo PLayer move
+        OnComplete?.Invoke();
     }
 }

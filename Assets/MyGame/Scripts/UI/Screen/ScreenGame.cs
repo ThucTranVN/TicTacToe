@@ -108,8 +108,7 @@ public class ScreenGame : BaseScreen
     {
         if (UIManager.HasInstance)
         {
-            string title = "SETTING";
-            UIManager.Instance.ShowPopup<PopupSettingGame>(title);
+            UIManager.Instance.ShowPopup<PopupSettingGame>();
         }
 
     }

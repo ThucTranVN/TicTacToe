@@ -153,12 +153,14 @@ public class BoardController : BaseManager<BoardController>
                 {
                     if (isGameOver) return;
 
-                    commandInvoker.UndoLastCommand();
-                    commandInvoker.UndoLastCommand();
-                    if (GameManager.HasInstance && GameManager.Instance.CurrenGameMode == GameMode.PVE && currentPlayer == Player.PlayerB)
+                    commandInvoker.UndoLastTwoMoves();
+                    commandInvoker.OnComplete += () =>
                     {
-                        StartCoroutine(DelayedAIMove());
-                    }
+                        if (GameManager.HasInstance && GameManager.Instance.CurrenGameMode == GameMode.PVE && currentPlayer == Player.PlayerB)
+                        {
+                            StartCoroutine(DelayedAIMove());
+                        }
+                    };
                 }
                 break;
         }
