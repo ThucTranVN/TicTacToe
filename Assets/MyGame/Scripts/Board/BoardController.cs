@@ -8,6 +8,8 @@ public class BoardController : BaseManager<BoardController>
     public GameObject tilePrefab;
     public int borderSize;
 
+    [SerializeField] private GlobalConfig globalConfig;
+
     private BoardType defaultBoardType;
     private BoardType currenttBoardType;
     private int width;
@@ -41,7 +43,9 @@ public class BoardController : BaseManager<BoardController>
         if (DataManager.HasInstance)
         {
             defaultBoardType = DataManager.Instance.GetCurrentBoardType();
+            globalConfig = DataManager.Instance.GlobalConfig;
         }
+        
     }
 
     public void InitBoard(BoardType boardType)
@@ -106,9 +110,7 @@ public class BoardController : BaseManager<BoardController>
             return;
 
         TileState playerState = currentPlayer == Player.PlayerA ? TileState.O : TileState.X;
-        // Command pattern to handle tile state change
-        commandInvoker.ExecuteCommand(tile, playerState);
-        //tile.SetState(playerState);
+        commandInvoker.ExecuteCommand(new SetTileCommand(tile, playerState));
 
         int winCount = CheckWin(tile, playerState);
 
@@ -145,7 +147,7 @@ public class BoardController : BaseManager<BoardController>
             case GameMode.PVP:
                 {
                     if (isGameOver) return;
-                    commandInvoker.UndoLastCommand();
+                    commandInvoker.UndoLastCommand(globalConfig.amountUndoMovePlayer);
                     SwitchPlayer();
                 }
                 break;
@@ -153,18 +155,16 @@ public class BoardController : BaseManager<BoardController>
                 {
                     if (isGameOver) return;
 
-                    commandInvoker.UndoLastTwoMoves();
-                    commandInvoker.OnComplete += () =>
+                    commandInvoker.UndoLastCommand(globalConfig.amountUndoMoveAI,()=>
                     {
                         if (GameManager.HasInstance && GameManager.Instance.CurrenGameMode == GameMode.PVE && currentPlayer == Player.PlayerB)
                         {
                             StartCoroutine(DelayedAIMove());
                         }
-                    };
+                    });
                 }
                 break;
         }
-        
     }    
     private void SwitchPlayer()
     {

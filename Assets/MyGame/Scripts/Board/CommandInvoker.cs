@@ -3,33 +3,24 @@ using System.Collections.Generic;
 
 public class CommandInvoker
 {
-    private readonly Stack<Tile> commandHistory = new();
-    public Action OnComplete;
+    private readonly Stack<ICommand> commandHistory = new();
 
-    public void ExecuteCommand(Tile tile, TileState newState)
+    public void ExecuteCommand(ICommand command)
     {
-        if (tile.state != TileState.Unknown)
-        {
-            // If the tile is already set, we cannot change it
-            return;
-        }
-        // Save the current state before changing it
-        commandHistory.Push(tile);
-        tile.SetState(newState);
+        command.Execute();
+        commandHistory.Push(command);
     }
 
-    public void UndoLastCommand()
+    public void UndoLastCommand(int amountUndoMove, Action onComplete = null)
     {
-        if (commandHistory.Count > 0)
+        if (commandHistory.Count >= amountUndoMove)
         {
-            Tile lastTile = commandHistory.Pop();
-            lastTile.SetState(TileState.Unknown); // Reset the tile state to Unknown
+            for (int i = 0; i < amountUndoMove; i++)
+            {
+                ICommand lastCommand = commandHistory.Pop();
+                lastCommand.Undo();
+            }
+            onComplete?.Invoke();
         }
-    }
-    public void UndoLastTwoMoves()
-    {
-        UndoLastCommand();// Undo AI move
-        UndoLastCommand();// Undo PLayer move
-        OnComplete?.Invoke();
     }
 }
