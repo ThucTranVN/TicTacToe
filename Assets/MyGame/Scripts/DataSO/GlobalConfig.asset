@@ -64,3 +64,5 @@ MonoBehaviour:
   radiusMove: 1
   maxCandidates: 8
   nearbyMove: 4
+  amountUndoMovePlayer: 1
+  amountUndoMoveAI: 2

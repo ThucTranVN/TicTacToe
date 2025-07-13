@@ -8,15 +8,17 @@ using UnityEngine.UI;
 public class ScreenGame : BaseScreen
 {
     [SerializeField] private TMP_Dropdown difficultDropdown;
+    [SerializeField] private CanvasGroup cvgdifficultDropdown;
     [SerializeField] private Button backBtn;
     [SerializeField] private Button settingBtn;
+    [SerializeField] private Button hintBtn;
+    [SerializeField] private Button undoBtn;
     
     private List<AIDepthLevel> depthOptions;
 
     private void Start()
     {
-        backBtn.onClick.AddListener(OnClickBackButton);
-        settingBtn.onClick.AddListener(OnClickSettingButton);
+        InitButton();
     }
     public override void Show(object data)
     {
@@ -30,21 +32,13 @@ public class ScreenGame : BaseScreen
                 {
                     case GameMode.PVP:
                         {
-                            if(canvasGroup != null)
-                            {
-                                canvasGroup.alpha = 0f; // Hide groupdown when in PVP mode
-                                canvasGroup.interactable = false;
-                            }
+                            ShowUIDifficult(false); // Hide dropdown when in PVP mode
                         }
                         break;
                     case GameMode.PVE:
                         {
                             InitDropdown();
-                            if (canvasGroup != null)
-                            {
-                                canvasGroup.alpha = 1f; // Show dropdown when in PVE mode
-                                canvasGroup.interactable = true;
-                            }
+                            ShowUIDifficult(true); // Show dropdown when in PVE mode
                         }
                         break;
                 }
@@ -57,6 +51,21 @@ public class ScreenGame : BaseScreen
     public override void Init()
     {
         base.Init();
+    }
+    private void ShowUIDifficult(bool isShow)
+    {
+        if (cvgdifficultDropdown != null)
+        {
+            cvgdifficultDropdown.alpha = isShow ? 1f : 0f;
+            cvgdifficultDropdown.interactable = isShow;
+            cvgdifficultDropdown.blocksRaycasts = isShow;
+        }
+    }
+    private void InitButton()
+    {
+        backBtn.onClick.AddListener(OnClickBackButton);
+        settingBtn.onClick.AddListener(OnClickSettingButton);
+        undoBtn.onClick.AddListener(OnClickUndoButton);
     }
 
     private void InitDropdown()
@@ -99,9 +108,15 @@ public class ScreenGame : BaseScreen
     {
         if (UIManager.HasInstance)
         {
-            string title = "SETTING";
-            UIManager.Instance.ShowPopup<PopupSettingGame>(title);
+            UIManager.Instance.ShowPopup<PopupSettingGame>();
         }
 
+    }
+    private void OnClickUndoButton()
+    {
+        if (BoardController.HasInstance)
+        {
+            BoardController.Instance.UndoMove();
+        }
     }
 }

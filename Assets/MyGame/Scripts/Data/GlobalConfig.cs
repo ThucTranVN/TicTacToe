@@ -64,4 +64,8 @@ public class GlobalConfig : ScriptableObject
     public int radiusMove;
     public int maxCandidates;
     public int nearbyMove;
+
+    [Header("Setting Undo Move")]
+    public int amountUndoMovePlayer = 1;
+    public int amountUndoMoveAI = 2;
 }
