@@ -66,6 +66,7 @@ public class ScreenGame : BaseScreen
         backBtn.onClick.AddListener(OnClickBackButton);
         settingBtn.onClick.AddListener(OnClickSettingButton);
         undoBtn.onClick.AddListener(OnClickUndoButton);
+        hintBtn.onClick.AddListener(OnClickHintButton);
     }
 
     private void InitDropdown()
@@ -117,6 +118,13 @@ public class ScreenGame : BaseScreen
         if (BoardController.HasInstance)
         {
             BoardController.Instance.UndoMove();
+        }
+    }
+    private void OnClickHintButton()
+    {
+        if (BoardController.HasInstance)
+        {
+            BoardController.Instance.HintMove();
         }
     }
 }

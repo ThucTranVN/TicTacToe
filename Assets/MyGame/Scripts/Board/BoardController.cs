@@ -378,7 +378,7 @@ public class BoardController : BaseManager<BoardController>
     private void AIMove()
     {
         // Get WinLength from Width
-        int winLength = GetWinLengthFromBoardSize(width);
+        //int winLength = GetWinLengthFromBoardSize(width);
 
         //// 1. Init Board
         //BoardState boardState = new(width, height);
@@ -388,11 +388,12 @@ public class BoardController : BaseManager<BoardController>
         {
             if (DataManager.HasInstance)
             {
-                int maxDepth = (int)GameManager.Instance.AIDepthLevel; //GameManager.Instance.Difficult;
-                                                                       // 2. Init AI
-                MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig, this);
-                ai.LoadFrom(tiles, width, height);
+                //int maxDepth = (int)GameManager.Instance.AIDepthLevel; //GameManager.Instance.Difficult;
+                //                                                       // 2. Init AI
+                //MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig, this);
+                //ai.LoadFrom(tiles, width, height);
                 //3.Find Move
+                MinimaxAI ai = CreateAI();
                 Vector2Int move = ai.FindBestMove(currenttBoardType);
                 Debug.Log("Số node Minimax đã duyệt: " + ai.NodeCount);
                 // 4. Take that move
@@ -403,6 +404,51 @@ public class BoardController : BaseManager<BoardController>
             }
         }
     }
+
+    public void HintMove()
+    {
+        if (isGameOver) return;
+        if (GameManager.HasInstance && GameManager.Instance.CurrenGameMode == GameMode.PVE && currentPlayer == Player.PlayerB)
+        {
+            Debug.LogWarning("Không thể gợi ý nước đi khi AI đang chơi.");
+            return;
+        }
+        if (DataManager.HasInstance)
+        {
+            //int maxDepth = (int)GameManager.Instance.AIDepthLevel; //GameManager.Instance.Difficult;
+            //MinimaxAI ai = new(TileState.X, maxDepth, 3, DataManager.Instance.GlobalConfig, this);
+            //ai.LoadFrom(tiles, width, height);
+            MinimaxAI ai = CreateAI();
+            Vector2Int move = ai.BestMove(TileState.O);
+            Debug.Log("Số node Minimax đã duyệt: " + ai.NodeCount);
+            if (IsInBounds(move.x, move.y) && tiles[move.x, move.y].state == TileState.Unknown)
+            {
+                tiles[move.x, move.y].Highlight();
+                // Hiển thị gợi ý nước đi
+                Debug.Log($"Gợi ý nước đi: ({move.x}, {move.y})");
+            }
+            else
+            {
+                Debug.LogWarning("Không có nước đi hợp lệ để gợi ý.");
+            }
+        }
+    }  
+    
+    private MinimaxAI CreateAI()
+    {
+        if(GameManager.HasInstance && DataManager.HasInstance)
+        {
+            int winLength = GetWinLengthFromBoardSize(width);
+            int maxDepth = (int)GameManager.Instance.AIDepthLevel; //GameManager.Instance.Difficult;
+            MinimaxAI ai = new(TileState.X, maxDepth, winLength, DataManager.Instance.GlobalConfig, this);
+            ai.LoadFrom(tiles, width, height);
+            return ai;
+        }    
+        return null;
+    }
+
+
+
 
     private IEnumerator DelayedAIMove()
     {

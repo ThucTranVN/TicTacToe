@@ -35,8 +35,8 @@ public class MinimaxAI
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
-        if (DataManager.HasInstance)
-            globalConfig = DataManager.Instance.GlobalConfig;
+        //if (DataManager.HasInstance)
+        //    globalConfig = DataManager.Instance.GlobalConfig;
 
         var availableMoves = GetAvailableMoves();
         int width = board.GetLength(0);
@@ -92,14 +92,39 @@ public class MinimaxAI
             return availableMoves[Random.Range(0, availableMoves.Count)];
         }
 
+        //// 4. Minimax với alpha-beta
+        //int bestScore = int.MinValue;
+        //Vector2Int bestMove = new(-1, -1);
+        //var moves = GetCandidateMoves(globalConfig.radiusMove, globalConfig.maxCandidates);
+
+        //foreach (var move in moves)
+        //{
+        //    MakeMove(move.x, move.y, aiPlayer);
+        //    int score = Minimax(0, false, int.MinValue, int.MaxValue);
+        //    UndoMove(move.x, move.y);
+
+        //    if (score > bestScore)
+        //    {
+        //        bestScore = score;
+        //        bestMove = move;
+        //    }
+        //}
+
+        stopwatch.Stop();
+        UnityEngine.Debug.Log($"⏱️ Time: {stopwatch.ElapsedMilliseconds} ms | Nodes: {nodeCount}");
+        return BestMove(aiPlayer);
+    }
+
+    public Vector2Int BestMove(TileState tileState)
+    {
         // 4. Minimax với alpha-beta
         int bestScore = int.MinValue;
-        Vector2Int bestMove = new Vector2Int(-1, -1);
+        Vector2Int bestMove = new(-1, -1);
         var moves = GetCandidateMoves(globalConfig.radiusMove, globalConfig.maxCandidates);
 
         foreach (var move in moves)
         {
-            MakeMove(move.x, move.y, aiPlayer);
+            MakeMove(move.x, move.y, tileState);
             int score = Minimax(0, false, int.MinValue, int.MaxValue);
             UndoMove(move.x, move.y);
 
@@ -109,9 +134,6 @@ public class MinimaxAI
                 bestMove = move;
             }
         }
-
-        stopwatch.Stop();
-        UnityEngine.Debug.Log($"⏱️ Time: {stopwatch.ElapsedMilliseconds} ms | Nodes: {nodeCount}");
         return bestMove;
     }
 
